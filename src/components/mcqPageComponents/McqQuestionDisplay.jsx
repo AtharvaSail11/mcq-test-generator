@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { mcqQuestions } from "./dummyData/McqQuestions";
 import ResultDisplay from "./ResultDisplay";
 import { Clock,ChevronLeft,ChevronRight } from "lucide-react";
+import ProgressBar from "./components/ProgressBar";
 
 const McqQuestionDisplay=()=>{
     const [question,setQuestion]=useState(0);
@@ -53,6 +54,10 @@ const McqQuestionDisplay=()=>{
         setCurrentQuestionData(mcqQuestions[question]);
     },[question])
 
+    useEffect(()=>{
+        console.log('percentage:',(selectedAnswer.length/mcqQuestions.length)*100);
+    },[selectedAnswer])
+
     if(submitted){
         return(
             <ResultDisplay selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} />
@@ -70,6 +75,19 @@ const McqQuestionDisplay=()=>{
                     </div>
 
                 </div>
+
+                {/* <div className="flex flex-col gap-2 w-full">
+                    <div className="flex justify-between">
+                        <p>Question {question+1} of {mcqQuestions.length}</p>
+                        <p>{(selectedAnswer.length/mcqQuestions.length)*100}% Complete</p>
+                    </div>
+
+                    <div className="w-full h-max rounded bg-blue-300">
+                        <div className={`h-2.5 bg-blue-700 rounded`} style={{width:`${(selectedAnswer.length/mcqQuestions.length)*100}%`}}></div>
+                    </div>
+
+                </div> */}
+                <ProgressBar attemptedQuestions={selectedAnswer.length} totalQuestions={mcqQuestions.length} question={question}/>
 
                 <div className="flex flex-col p-10 items-center w-full bg-white border-2 border-gray-400 rounded-lg">
                     <p className="text-2xl font-semibold mb-5">{currentQuestionData?.question}</p>
