@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { mcqQuestions } from "./dummyData/McqQuestions";
+import { Clock } from "lucide-react";
 
 const ResultDisplay=({correctAnswer,incorrectAnswer,selectedAnswer})=>{
 
