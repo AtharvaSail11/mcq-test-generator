@@ -17,7 +17,7 @@ const McqQuestionDisplay=()=>{
 
         const calculateAnswer = () =>{
         mcqQuestions.forEach((item,index)=>{
-            console.log("currentAnswer:",item.options[selectedAnswer[index]])
+            console.log("currentAnswer:",item.options[selectedAnswer[index]]);
             if(item.options[selectedAnswer[index]]===item.correctAnswer){
                 setCorrectAnswer(prev=>prev+1);
             }else{

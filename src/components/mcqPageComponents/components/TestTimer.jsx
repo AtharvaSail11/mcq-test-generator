@@ -3,20 +3,16 @@ import { useState,useEffect, useRef } from "react";
 
 
 const TestTimer=({handleSubmit})=>{
-    const [seconds,setSeconds]=useState(10)
+    const [seconds,setSeconds]=useState(20)
     const [minutes,setMinutes]=useState(0);
-    const latestHandleSubmit=useRef(handleSubmit);
 
-    useEffect(()=>{
-        latestHandleSubmit.current=handleSubmit
-    },[handleSubmit])
 
     useEffect(()=>{
         const timer=setInterval(()=>{
             setSeconds((prev)=>{
             if(prev === 0 && minutes === 0){
                 clearInterval(timer);
-                latestHandleSubmit.current();
+                // handleSubmit();
                 return 0;
             }
 
