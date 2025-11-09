@@ -9,11 +9,31 @@ import TestTimer from "./components/TestTimer";
 const McqQuestionDisplay=()=>{
     const [question,setQuestion]=useState(0);
     const [selectedAnswer,setSelectedAnswer]=useState([]);
-    const [currentQuestionData,setCurrentQuestionData]=useState(mcqQuestions[question]);
+    const [currentQuestionData,setCurrentQuestionData]=useState(null);
     const [submitted,setSubmitted]=useState(false);
     const [isSubmitting,setIsSubmitting]=useState(false);
     const [correctAnswer,setCorrectAnswer]=useState(0);
+    const [loading,setLoading]=useState(true);
     const [incorrectAnswer,setIncorrectAnswer]=useState(0);
+    const [mcqQuestion,setMcqQuestion]=useState(null);
+
+    const generateMcqQuestions=async()=>{
+        try{
+            const response=await fetch('http://localhost:3000/api/generateQuestions',{
+                method:"POST",
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify({data:"This will be the payload"}),
+            });
+
+            const data=await response.json();
+            console.log("data.questions:",data);
+            setMcqQuestion(data.questions);
+        }catch(error){
+            console.log(error)
+        }
+    }
 
         const calculateAnswer = () =>{
         mcqQuestions.forEach((item,index)=>{
@@ -25,6 +45,12 @@ const McqQuestionDisplay=()=>{
             }
         })
     }
+
+    useEffect(()=>{
+        generateMcqQuestions();
+    },[]);
+
+
 
     const handleOptionSelection = (index) =>{
         setSelectedAnswer((prev)=>{
@@ -58,8 +84,20 @@ const McqQuestionDisplay=()=>{
     },[question])
 
     useEffect(()=>{
+        if(mcqQuestion){
+            console.log("mcqQuestion",mcqQuestion)
+            setCurrentQuestionData(mcqQuestion[question]);
+            setLoading(false);
+        }
+    },[mcqQuestion])
+
+    useEffect(()=>{
         console.log('percentage:',(selectedAnswer.length/mcqQuestions.length)*100);
     },[selectedAnswer])
+
+    if(loading){
+        return(<p>Loading...</p>)
+    }
 
     if(submitted){
         return(
