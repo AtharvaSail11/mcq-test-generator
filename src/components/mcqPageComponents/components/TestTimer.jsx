@@ -20,12 +20,19 @@ const TestTimer=({Time,handleSubmit})=>{
 
     useEffect(()=>{
         const timer=setInterval(()=>{
-        setTotalTime(totalTime - 1000);  
-        if(totalTime < 1){
-            clearInterval(timer);
-            handleSubmit(); 
-        }
-        },1000);
+                setTotalTime((prevTime)=>{
+            const newTime=prevTime - 1000;
+
+            if(newTime < 1){
+                clearInterval(timer);
+                handleSubmit(); 
+                return 0;
+            }
+
+            return newTime;
+        });  
+
+    },1000);
         
         return ()=>clearInterval(timer);
     },[totalTime])
