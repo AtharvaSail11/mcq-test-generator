@@ -109,7 +109,7 @@ const McqQuestionDisplay=()=>{
         <div className="flex justify-center items-center h-full w-full p-5">
             <div className="flex flex-col gap-10 justify-center items-center h-[98%] w-[60%]">
                 
-                <TestTimer Time={3*60*60*1000}/>
+                <TestTimer Time={60*60*1000} handleSubmit={handleSubmit}/>
 
                 <ProgressBar attemptedQuestions={selectedAnswer.length} totalQuestions={mcqQuestions.length} question={question}/>
 

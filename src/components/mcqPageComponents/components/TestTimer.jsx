@@ -2,7 +2,7 @@ import { Clock } from "lucide-react"
 import { useState,useEffect, useRef } from "react";
 
 
-const TestTimer=({Time})=>{
+const TestTimer=({Time,handleSubmit})=>{
     const [totalTime,setTotalTime]=useState(Time);
 
 
@@ -14,13 +14,17 @@ const TestTimer=({Time})=>{
         const currentSeconds=Math.floor(totalSeconds % 60)
         const currentMinutes=Math.floor(totalMinutes % 60);
 
-        return `${currentHours}:${currentMinutes}:${currentSeconds}`;
+        return `${currentHours ? currentHours+":":""}${currentMinutes}:${currentSeconds}`;
     }
 
 
     useEffect(()=>{
         const timer=setInterval(()=>{
-        setTotalTime(totalTime - 1000);   
+        setTotalTime(totalTime - 1000);  
+        if(totalTime < 1){
+            clearInterval(timer);
+            handleSubmit(); 
+        }
         },1000);
         
         return ()=>clearInterval(timer);
