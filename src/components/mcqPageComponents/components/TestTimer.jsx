@@ -2,46 +2,36 @@ import { Clock } from "lucide-react"
 import { useState,useEffect, useRef } from "react";
 
 
-const TestTimer=({handleSubmit})=>{
-    const [seconds,setSeconds]=useState(20)
-    const [minutes,setMinutes]=useState(0);
+const TestTimer=({Time})=>{
+    const [totalTime,setTotalTime]=useState(Time);
+
+
+    const getTotalTime=()=>{
+        const totalSeconds=Math.floor(totalTime/1000);
+        const totalMinutes=Math.floor(totalSeconds/60);
+        const currentHours=Math.floor(totalMinutes/60);
+
+        const currentSeconds=Math.floor(totalSeconds % 60)
+        const currentMinutes=Math.floor(totalMinutes % 60);
+
+        return `${currentHours}:${currentMinutes}:${currentSeconds}`;
+    }
 
 
     useEffect(()=>{
         const timer=setInterval(()=>{
-            setSeconds((prev)=>{
-            if(prev === 0 && minutes === 0){
-                clearInterval(timer);
-                // handleSubmit();
-                return 0;
-            }
-
-            if(prev > 0){
-                return prev - 1;
-            }else{
-                setMinutes((prevMinutes)=>{
-                    if(prevMinutes > 0){
-                        return prevMinutes - 1;
-                    }else{
-                        return prevMinutes;
-                    }
-                })
-                return 59;
-            }
-
-            })
-           
+        setTotalTime(totalTime - 1000);   
         },1000);
         
         return ()=>clearInterval(timer);
-    },[minutes])
+    },[totalTime])
 
     return(
         <div className="flex justify-center items-center h-[20%] w-[30%] rounded-lg border shadow-sm text-card-foreground">
                     <Clock/>
                     <div className="flex flex-col mx-2 gap-1">
                         <p>Time Remaining</p>
-                        <p className="text-3xl font-semibold">{minutes}:{(seconds < 10 && 0)}{seconds}</p>
+                        <p className="text-3xl font-semibold">{getTotalTime()}</p>
                     </div>
 
                 </div>
