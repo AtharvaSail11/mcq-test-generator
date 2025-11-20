@@ -26,7 +26,7 @@ const TestGeneratorPopup=({setTestGeneratorPopup})=>{
                         <p className="relative mt-2 font-bold">{file?file:"Upload File"}</p>
                         <p className="relative mt-2">{"Upload a .txt, .pdf, or .docx file"}</p>
                         <label className="relative font-semibold min-w-[84px] max-w-[480px] bg-gray-200 hover:bg-gray-300 cursor-pointer text-black rounded-xl px-4 py-2 m-2" htmlFor="file-input">Choose a file</label>
-                        <input style={{display:"none"}} id="file-input" type="file" accept="application/pdf, .docx" onChange={handleFileChange}/> 
+                        <input style={{display:"none"}} id="file-input" name="file-input" type="file" accept="application/pdf, .docx" onChange={handleFileChange}/> 
                     </div>
 
             </div>
