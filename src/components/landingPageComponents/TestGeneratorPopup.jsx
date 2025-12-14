@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 
-const TestGeneratorPopup=({setTestGeneratorPopup})=>{
+const TestGeneratorPopup=({setTestGeneratorPopup,setMainMcqPage,setQuestionData})=>{
     const fileRef=useRef(null);
     const [fileName,setFileName]=useState('Upload File');
     const [testDuration,setTestDuration]=useState(null);
@@ -30,7 +30,7 @@ const TestGeneratorPopup=({setTestGeneratorPopup})=>{
 
         const formData=new FormData();
         formData.append('docFile',file);
-        formData.append('numberOfQuestions',10);
+        formData.append('numberOfQuestions',5);
         formData.append('testDuration',15);
         const response=await fetch('http://localhost:3000/api/generateQuestions',{
             method:'POST',
