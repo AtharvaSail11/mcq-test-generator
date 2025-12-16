@@ -38,6 +38,9 @@ const TestGeneratorPopup=({setTestGeneratorPopup,setMainMcqPage,setQuestionData}
         });
 
         const data=await response.json();
+        const questionData=data?.questions?.questions
+        // setQuestionData(questionData)
+        // setMainMcqPage(true);
 
         console.log('response from server:',data);
     }
