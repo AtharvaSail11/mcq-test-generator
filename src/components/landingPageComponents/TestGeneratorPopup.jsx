@@ -30,7 +30,7 @@ const TestGeneratorPopup=({setTestGeneratorPopup,setMainMcqPage,setQuestionData}
 
         const formData=new FormData();
         formData.append('docFile',file);
-        formData.append('numberOfQuestions',5);
+        formData.append('numberOfQuestions',2);
         formData.append('testDuration',15);
         const response=await fetch('http://localhost:3000/api/generateQuestions',{
             method:'POST',
@@ -39,10 +39,8 @@ const TestGeneratorPopup=({setTestGeneratorPopup,setMainMcqPage,setQuestionData}
 
         const data=await response.json();
         const questionData=data?.questions?.questions
-        // setQuestionData(questionData)
+        setQuestionData(questionData)
         // setMainMcqPage(true);
-
-        console.log('response from server:',data);
     }
 
     return(
