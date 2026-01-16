@@ -1,8 +1,8 @@
 import McqQuestionDisplay from "../components/mcqPageComponents/McqQuestionDisplay";
-const McqMainPage=()=>{
+const McqMainPage=({questionData})=>{
     return(
         <div className="min-h-full h-max w-full bg-blue-50">
-            <McqQuestionDisplay/>
+            <McqQuestionDisplay questionData={questionData}/>
         </div>
     )
 }

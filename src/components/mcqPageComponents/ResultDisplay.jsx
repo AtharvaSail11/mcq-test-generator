@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { mcqQuestions } from "./dummyData/McqQuestions";
 import { Clock } from "lucide-react";
 
-const ResultDisplay=({correctAnswer,incorrectAnswer,selectedAnswer})=>{
+const ResultDisplay=({correctAnswer,incorrectAnswer,selectedAnswer,mcqQuestions})=>{
 
     return(
         <div className="flex flex-col items-center w-full p-5">
