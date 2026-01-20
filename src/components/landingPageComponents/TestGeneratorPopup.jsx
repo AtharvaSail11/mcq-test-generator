@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
 
 
-const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData }) => {
+const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, setTestDuration, setTestName }) => {
     const fileRef = useRef(null);
     const [fileName, setFileName] = useState('Upload File');
-    const [testDuration, setTestDuration] = useState(null);
     const [numOfQuestions, setNumOfQuestions] = useState(null);
     const [testGenerationType, setTestGenerationType] = useState('AI');
-    const [jsonData,setJsonData]=useState(null);
+    const [jsonData, setJsonData] = useState(null);
 
 
 
@@ -25,8 +24,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
         }
     }
 
-    const handleJsonInputChange=(e)=>{
-        const text=e.target.value;
+    const handleJsonInputChange = (e) => {
+        const text = e.target.value;
         setJsonData(text);
     }
 
@@ -48,6 +47,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
     }
 
     const handleJsonTestGeneration = async () => {
+        console.log('jsonData:', jsonData);
         setQuestionData(JSON.parse(jsonData));
         setMainMcqPage(true);
     }
@@ -78,8 +78,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                     </div>
                     <div className="flex w-full gap-4">
                         <div className="flex flex-col w-1/2 justify-between">
-                            <label htmlFor="required-time">Test Duration</label>
-                            <select className="border border-gray-300 rounded-md" id="required-time" onChange={handleSelect}>
+                            <label htmlFor="required-time1">Test Duration</label>
+                            <select className="border border-gray-300 rounded-md" id="required-time1" onChange={handleSelect}>
                                 <option value="">Select</option>
                                 <option value="15" >15 min</option>
                                 <option value="30" >30 min</option>
@@ -90,6 +90,10 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                             <label htmlFor="questions-num">Number of questions:</label>
                             <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" />
                         </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <label htmlFor="testName">Test Name</label>
+                        <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                     </div>
                     <button className="relative w-full bg-blue-500 hover:bg-blue-700 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleRequestSending}>Generate Test</button>
                 </div>
@@ -111,6 +115,17 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                         </div>
                         <p>5.Click the Generate Test button</p>
 
+                    </div>
+                    <div className="flex flex-col">
+                        <label htmlFor="required-time2">Test Duration</label>
+                        <select className="border border-gray-300 rounded-md" id="required-time2" onChange={handleSelect}>
+                            <option value="">Select</option>
+                            <option value="15" >15 min</option>
+                            <option value="30" >30 min</option>
+                            <option value="60" >1 hour </option>
+                        </select>
+                        <label htmlFor="testName">Test Name</label>
+                        <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                     </div>
                     <textarea className="w-full border-2 border-gray-200" onChange={handleJsonInputChange} placeholder="Paste the JSON Data here"></textarea>
                     <button className="relative w-full bg-blue-500 hover:bg-blue-700 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleJsonTestGeneration}>Generate Test</button>

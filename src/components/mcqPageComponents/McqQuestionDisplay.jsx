@@ -5,7 +5,7 @@ import ProgressBar from "./components/ProgressBar";
 import TestTimer from "./components/TestTimer";
 
 
-const McqQuestionDisplay = ({ questionData }) => {
+const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
     const [question, setQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [currentQuestionData, setCurrentQuestionData] = useState(null);
@@ -54,6 +54,10 @@ const McqQuestionDisplay = ({ questionData }) => {
         }
     }
 
+    const updateTestData={
+
+    }
+
     const handleSubmit = () => {
         console.log('handleSubmit was clicked!');
         calculateAnswer();
@@ -80,7 +84,7 @@ const McqQuestionDisplay = ({ questionData }) => {
 
     if (submitted) {
         return (
-            <ResultDisplay mcqQuestions={mcqQuestions} selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} />
+            <ResultDisplay mcqQuestions={mcqQuestions} selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} testName={testName} testDuration={testDuration}/>
         )
     }
 
@@ -88,7 +92,7 @@ const McqQuestionDisplay = ({ questionData }) => {
         <div className="flex justify-center items-center h-full w-full p-5">
             <div className="flex flex-col gap-10 justify-center items-center h-[98%] w-[60%]">
 
-                <TestTimer Time={60 * 60 * 1000} handleSubmit={handleSubmit} />
+                <TestTimer Time={Number(testDuration) * 60 * 1000} handleSubmit={handleSubmit} />
 
                 <ProgressBar attemptedQuestions={selectedAnswer.length} totalQuestions={mcqQuestions.length} question={question} />
 

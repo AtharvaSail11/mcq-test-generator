@@ -2,15 +2,26 @@ import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import { db } from "../../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { nanoid } from "nanoid";
+import { auth } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
 
-const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions }) => {
+const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions,testName,testDuration }) => {
+    const navigate=useNavigate()
     const storeMcqTestData = async () => {
         try {
             const collectionRef = collection(db, 'mcqTestData');
             const data = {
-                questionData: mcqQuestions
+                questionData: mcqQuestions,
+                testName:testName,
+                testDuration:testDuration,
+                testId:nanoid(12),
+                score:`${correctAnswer}/${correctAnswer+incorrectAnswer}`,
+                userId:auth.currentUser.uid
             }
+            console.log('data to add:',data);
             const addedDoc = await addDoc(collectionRef, data);
+            console.log('addedDoc:',addedDoc.id);
         } catch (error) {
             console.log('error:', error.message);
         }
@@ -45,6 +56,9 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
 
             <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={storeMcqTestData}>
                 <p>Save</p>
+            </button>
+            <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={()=>navigate('/Dashboard')}>
+                <p>Dashboard</p>
             </button>
         </div>
     )

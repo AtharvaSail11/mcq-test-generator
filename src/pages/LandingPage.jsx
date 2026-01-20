@@ -7,13 +7,17 @@ import { useState } from "react";
 const LandingPage=()=>{
     const [mainMcqPage,setMainMcqPage]=useState(false);
     const [questionData,setQuestionData]=useState([]);
+    const [testDuration, setTestDuration] = useState(null);
+    const [testName, setTestName] = useState(null);
+
+
 
     return(
-        mainMcqPage?<McqMainPage questionData={questionData}/>:
+        mainMcqPage?<McqMainPage questionData={questionData} testDuration={testDuration} testName={testName}/>:
         <div className="h-full w-full">
             <Navbar/>
             <Title/>
-            <GeneratorSection setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData}/>
+            <GeneratorSection setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData} setTestDuration={setTestDuration} setTestName={setTestName}/>
         </div>
     )
 }
