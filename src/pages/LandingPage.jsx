@@ -9,13 +9,14 @@ const LandingPage=()=>{
     const [questionData,setQuestionData]=useState([]);
     const [testDuration, setTestDuration] = useState(null);
     const [testName, setTestName] = useState(null);
+    const currentSection='LandingPage'
 
 
 
     return(
         mainMcqPage?<McqMainPage questionData={questionData} testDuration={testDuration} testName={testName}/>:
         <div className="h-full w-full">
-            <Navbar/>
+            <Navbar currentSection={currentSection}/>
             <Title/>
             <GeneratorSection setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData} setTestDuration={setTestDuration} setTestName={setTestName}/>
         </div>
