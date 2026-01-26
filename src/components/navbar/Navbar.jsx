@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { auth } from "../../config/firebase";
 import { MenuIcon } from "lucide-react";
+import { Book } from "lucide-react";
 
 const Navbar = ({currentSection}) => {
     const currentUser = useContext(UserContext);
@@ -14,8 +15,8 @@ const Navbar = ({currentSection}) => {
         navigate('/')
     }
     return (
-        <div className="flex items-center justify-between h-[10%] w-full px-4">
-            <p>McqGenerator</p>
+        <div className="flex absolute z-10 items-center shadow-lg justify-between h-[8%] w-full px-4 bg-blue-50">
+            <p className="flex items-center gap-2 text-lg font-semibold"><Book/> McqGenerator</p>
             {currentUser ? <div className="flex gap-2 mr-5">
                 <MenuIcon style={{ cursor: 'pointer' }} onClick={() => setMenuPopup(true)} />
                 {menuPopup ? <div className="flex flex-col z-20 absolute bg-white shadow-lg max-w-2xl rounded-xl justify-center w-50 right-8">
@@ -27,7 +28,7 @@ const Navbar = ({currentSection}) => {
                 </div> : null}
                 {/* <button className="w-max h-max px-2 py-1 rounded-sm bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Dashboard')}>Dashboard</button>
                 <button className="w-max h-max px-2 py-1 rounded-sm bg-blue-600 hover:bg-blue-800 text-white cursor-pointer" onClick={handleLogout}>Logout</button> */}
-            </div> : <button className="w-max h-max px-2 py-1 rounded-sm bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Login')}>Login</button>
+            </div> : <button className="w-max h-max px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Login')}>Login</button>
             }
 
         </div>

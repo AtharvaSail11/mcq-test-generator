@@ -69,26 +69,26 @@ const Dashboard = () => {
     return (
         <div className="flex bg-gray-100 flex-col h-screen w-full">
             <Navbar currentSection={currentSection} />
-            <div className="flex flex-col gap-5 h-full px-60 w-full">
+            <div className="flex mt-[10%] flex-col gap-5 h-full px-60 w-full">
                 <div className="flex justify-between w-full h-max">
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button>
                 </div>
-                <table className="relative">
+                <table className="relative shadow-[0px_0px_5px_0px_#d1d5dc]">
                     <thead>
                         <tr className="bg-gray-200">
-                            <th>Name</th>
-                            <th>Score</th>
-                            <th>Attempted At</th>
-                            <th>Action</th>
+                            <th className="py-2">Name</th>
+                            <th className="py-2">Score</th>
+                            <th className="py-2">Attempted At</th>
+                            <th className="py-2">Action</th>
                         </tr>
                     </thead>
                     {dataLoading ? <div className="flex absolute w-full justify-center"><LoaderIcon /></div> : <tbody>
                         {tableData.map((item, index) => (
                             <tr className="text-center border-b border-b-gray-300" key={`row-${index}`}>
-                                <td>{item.testName}</td>
-                                <td>{item.score}</td>
-                                <td>{new Date(item?.submittedAt).toDateString()}</td>
+                                <td className="py-5">{item.testName}</td>
+                                <td className="py-5">{item.score}</td>
+                                <td className="py-5">{new Date(item?.submittedAt).toDateString()}</td>
                                 <td>
                                     <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">View Results</button>
                                 </td>
