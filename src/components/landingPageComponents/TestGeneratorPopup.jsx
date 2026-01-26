@@ -53,7 +53,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
     }
 
     return (
-        <div className="flex absolute h-full w-full z-10 justify-center items-center border-2 bg-black/50 border-black">
+        <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
             <div className="flex flex-col gap-10 bg-white shadow-lg max-w-2xl rounded-xl justify-center w-full p-5">
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">

@@ -13,10 +13,12 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
             const collectionRef = collection(db, 'mcqTestData');
             const data = {
                 questionData: mcqQuestions,
+                selectedAnswers:selectedAnswer,
                 testName:testName,
                 testDuration:testDuration,
                 testId:nanoid(12),
                 score:`${correctAnswer}/${correctAnswer+incorrectAnswer}`,
+                submittedAt:new Date().toISOString(),
                 userId:auth.currentUser.uid
             }
             console.log('data to add:',data);

@@ -3,6 +3,7 @@ import ResultDisplay from "./ResultDisplay";
 import { Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import ProgressBar from "./components/ProgressBar";
 import TestTimer from "./components/TestTimer";
+import { calculateAnswer } from "../utils/calculationUtilities";
 
 
 const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
@@ -16,15 +17,7 @@ const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
     const [incorrectAnswer, setIncorrectAnswer] = useState(0);
     const [mcqQuestions, setMcqQuestions] = useState([]);
 
-    const calculateAnswer = () => {
-        mcqQuestions.forEach((item, index) => {
-            if (item.options[selectedAnswer[index]] === item.correctAnswer) {
-                setCorrectAnswer(prev => prev + 1);
-            } else {
-                setIncorrectAnswer(prev => prev + 1);
-            }
-        })
-    }
+
 
     useEffect(() => {
         if (questionData) {
@@ -60,7 +53,7 @@ const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
 
     const handleSubmit = () => {
         console.log('handleSubmit was clicked!');
-        calculateAnswer();
+        calculateAnswer(mcqQuestions,selectedAnswer,setCorrectAnswer,setIncorrectAnswer);
         setSubmitted(true)
     };
 
