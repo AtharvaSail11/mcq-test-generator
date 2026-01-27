@@ -92,7 +92,7 @@ const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
                 <div className="flex flex-col p-10 items-center w-full bg-white border-2 border-gray-400 rounded-lg">
                     <p className="text-2xl font-semibold mb-5">{currentQuestionData?.question}</p>
                     <div className="flex flex-col gap-5 w-full">
-                        {currentQuestionData?.options?.map((option, index) => (
+                        {currentQuestionData?.options?.map((option, index) => index < 4 && (
                             <div className={`flex gap-2 px-5 py-4 w-full h-max border-2 border-black cursor-pointer ${(selectedAnswer[question] === index && "border-blue-700")} hover:border-blue-700 rounded-2xl`} key={index} onClick={() => { handleOptionSelection(index) }}>
                                 <div className={`flex justify-center items-center h-7 w-7 rounded-full border-2 ${(selectedAnswer[question] === index && "bg-blue-700 border-blue-700")} border-black hover:border-blue-700`}>
                                     <div className="bg-white rounded-full h-[50%] w-[50%]"></div>

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { jsonrepair } from "jsonrepair";
 
 
 const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, setTestDuration, setTestName }) => {
@@ -29,6 +30,23 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
         setJsonData(text);
     }
 
+    const repairJsonData = (data) => {
+        try {
+            const jsonData = JSON.parse(data)
+            return jsonData;
+        } catch (error) {
+            console.log(`An error occured! Repairing JSON...`);
+            try {
+                const repaired = jsonrepair(data);
+                console.log('JSON Repaired Successfully!');
+                return JSON.parse(repaired);
+            }catch(error2){
+                console.log('JSON Data is beyond repair! Ask your LLM Chatbot to Fix it.');
+            }
+            
+        }
+    }
+
     const handleRequestSending = async () => {
         const file = fileRef.current.files[0];
 
@@ -43,12 +61,11 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
 
         const data = await response.json();
         const questionData = data?.questions?.questions
-        setQuestionData(questionData)
+        setQuestionData(repairJsonData(questionData));
     }
 
     const handleJsonTestGeneration = async () => {
-        console.log('jsonData:', jsonData);
-        setQuestionData(JSON.parse(jsonData));
+        setQuestionData(repairJsonData(jsonData));
         setMainMcqPage(true);
     }
 
@@ -102,7 +119,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                     <div className="flex flex-col gap-10 w-full justify-center">
                         <div className="flex flex-col px-5 py-2 w-full h-[200px] border-2 border-gray-400 rounded overflow-auto">
                             <p className="font-bold">Instructions</p>
-                            <ul style={{listStyleType:'Disc',marginLeft:'20px'}}>
+                            <ul style={{ listStyleType: 'Disc', marginLeft: '20px' }}>
                                 <li><p>Open gemini or any AI chatbot</p></li>
                                 <li><p>Upload your files in the chat</p></li>
                                 <li>
