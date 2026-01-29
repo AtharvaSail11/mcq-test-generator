@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { LoaderIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 
 
@@ -112,7 +112,7 @@ const Dashboard = () => {
                         </tr>
                     </thead>
                     {dataLoading ? <tr className="flex absolute w-full justify-center">
-                        <td><LoaderIcon /></td>
+                        <td><Loader2 className="animate-spinr"/></td>
                     </tr> : <tbody>
                         {tableData.map((item, index) => (
                             <tr className="text-center border-b border-b-gray-300" key={`row-${index}`}>
