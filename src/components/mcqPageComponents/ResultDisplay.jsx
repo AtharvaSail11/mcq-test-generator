@@ -56,12 +56,15 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
                 ))}
             </div>
 
-            <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={storeMcqTestData}>
+            {auth?.currentUser?.uid && (<div className="flex flex-col items-center">
+                            <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={storeMcqTestData}>
                 <p>Save</p>
             </button>
             <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={()=>navigate('/Dashboard')}>
                 <p>Dashboard</p>
             </button>
+            </div>)}
+
         </div>
     )
 }

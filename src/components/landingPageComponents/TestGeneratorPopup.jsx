@@ -1,13 +1,15 @@
 import { useRef, useState } from "react";
 import { jsonrepair } from "jsonrepair";
+import { Loader2 } from "lucide-react";
 
 
 const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, setTestDuration, setTestName }) => {
     const fileRef = useRef(null);
     const [fileName, setFileName] = useState('Upload File');
     const [numOfQuestions, setNumOfQuestions] = useState(null);
-    const [testGenerationType, setTestGenerationType] = useState('AI');
+    const [testGenerationType, setTestGenerationType] = useState('JSON');
     const [jsonData, setJsonData] = useState(null);
+    const [testLoading, setTestLoading] = useState(false);
 
 
 
@@ -40,28 +42,38 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                 const repaired = jsonrepair(data);
                 console.log('JSON Repaired Successfully!');
                 return JSON.parse(repaired);
-            }catch(error2){
+            } catch (error2) {
                 console.log('JSON Data is beyond repair! Ask your LLM Chatbot to Fix it.');
             }
-            
+
         }
     }
 
     const handleRequestSending = async () => {
-        const file = fileRef.current.files[0];
+        setTestLoading(true);
+        try {
+            const file = fileRef.current.files[0];
 
-        const formData = new FormData();
-        formData.append('docFile', file);
-        formData.append('numberOfQuestions', 2);
-        formData.append('testDuration', 15);
-        const response = await fetch(`${VITE_BACKEND_URL}/api/generateQuestions`, {
-            method: 'POST',
-            body: formData
-        });
+            const formData = new FormData();
+            formData.append('docFile', file);
+            formData.append('numberOfQuestions', numOfQuestions);
+            formData.append('testDuration', 15);
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/generateQuestions`, {
+                method: 'POST',
+                body: formData
+            });
 
-        const data = await response.json();
-        const questionData = data?.questions?.questions
-        setQuestionData(repairJsonData(questionData));
+            const data = await response.json();
+            console.log('data:', data.questions);
+            const questionData = data?.questions
+            setQuestionData(repairJsonData(JSON.stringify(questionData)));
+            setMainMcqPage(true);
+        } catch (error) {
+            console.log('error while generationg test:', error.message);
+        } finally {
+            setTestLoading(false)
+        }
+
     }
 
     const handleJsonTestGeneration = async () => {
@@ -80,8 +92,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                     <p>Provide your content and set the options to create your test.</p>
                 </div>
                 <div className="flex justify-around w-full h-max">
-                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
                     <button onClick={() => setTestGenerationType('JSON')} className={`relative w-max ${testGenerationType === 'JSON' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer font-semibold rounded-xl px-1.5 py-2 m-2`}>{"Generate using JSON (Recommended)"}</button>
+                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
                 </div>
                 {testGenerationType === 'AI' ? (
                     <div className="flex flex-col gap-10 w-full justify-center">
@@ -106,14 +118,14 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                             </div>
                             <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="questions-num">Number of questions:</label>
-                                <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" />
+                                <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e)=>setNumOfQuestions(e.target.value)} />
                             </div>
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="testName">Test Name</label>
                             <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                         </div>
-                        <button className="relative w-full bg-blue-500 hover:bg-blue-700 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleRequestSending}>Generate Test</button>
+                        <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading?'bg-gray-400 hover:bg-gray-500':'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-10 w-full justify-center">
