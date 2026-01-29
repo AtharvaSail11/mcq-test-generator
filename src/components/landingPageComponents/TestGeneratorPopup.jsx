@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { jsonrepair } from "jsonrepair";
 import { Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 
 const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, setTestDuration, setTestName }) => {
@@ -43,7 +44,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                 console.log('JSON Repaired Successfully!');
                 return JSON.parse(repaired);
             } catch (error2) {
-                console.log('JSON Data is beyond repair! Ask your LLM Chatbot to Fix it.');
+                toast.error('JSON Data is beyond repair! Ask your LLM Chatbot to Fix it.')
             }
 
         }
@@ -69,6 +70,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
             setQuestionData(repairJsonData(JSON.stringify(questionData)));
             setMainMcqPage(true);
         } catch (error) {
+            toast.error('Error while generating Test!');
             console.log('error while generationg test:', error.message);
         } finally {
             setTestLoading(false)

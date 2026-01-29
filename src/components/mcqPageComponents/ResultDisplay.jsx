@@ -5,26 +5,27 @@ import { collection, addDoc } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
-const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions,testName,testDuration }) => {
-    const navigate=useNavigate()
+const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions, testName, testDuration }) => {
+    const navigate = useNavigate()
     const storeMcqTestData = async () => {
         try {
             const collectionRef = collection(db, 'mcqTestData');
             const data = {
                 questionData: mcqQuestions,
-                selectedAnswers:selectedAnswer,
-                testName:testName,
-                testDuration:testDuration,
-                testId:nanoid(12),
-                score:`${correctAnswer}/${correctAnswer+incorrectAnswer}`,
-                submittedAt:new Date().toISOString(),
-                userId:auth.currentUser.uid
+                selectedAnswers: selectedAnswer,
+                testName: testName,
+                testDuration: testDuration,
+                testId: nanoid(12),
+                score: `${correctAnswer}/${correctAnswer + incorrectAnswer}`,
+                submittedAt: new Date().toISOString(),
+                userId: auth.currentUser.uid
             }
-            console.log('data to add:',data);
-            const addedDoc = await addDoc(collectionRef, data);
-            console.log('addedDoc:',addedDoc.id);
+            await addDoc(collectionRef, data);
+            toast.success('Saved the Test Results Successfully');
         } catch (error) {
+            toast.error('Error while Saving Test Results');
             console.log('error:', error.message);
         }
 
@@ -32,6 +33,7 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
 
     return (
         <div className="flex flex-col items-center w-full p-5">
+            <ToastContainer />
             <div className="flex flex-col items-center w-1/2 h-max">
                 <p className="font-semibold text-2xl text-green-500">Correct:{correctAnswer}</p>
                 <p className="font-semibold text-2xl text-red-500">Incorrect:{incorrectAnswer}</p>
@@ -56,14 +58,20 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
                 ))}
             </div>
 
-            {auth?.currentUser?.uid && (<div className="flex flex-col items-center">
-                            <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={storeMcqTestData}>
-                <p>Save</p>
-            </button>
-            <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={()=>navigate('/Dashboard')}>
-                <p>Dashboard</p>
-            </button>
-            </div>)}
+
+
+            <div className="flex flex-col items-center">
+                {auth?.currentUser?.uid && (
+                    <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={storeMcqTestData}>
+                        <p>Save</p>
+                    </button>
+                )}
+                <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={() => navigate('/Dashboard')}>
+                    <p>Dashboard</p>
+                </button>
+            </div>
+
+
 
         </div>
     )

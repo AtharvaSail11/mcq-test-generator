@@ -100,7 +100,7 @@ const Dashboard = () => {
             <div className="flex mt-[10%] flex-col gap-5 h-full px-60 w-full">
                 <div className="flex justify-between w-full h-max">
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
-                    <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button>
+                    {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
                 <table className="relative shadow-[0px_0px_5px_0px_#d1d5dc]">
                     <thead>
@@ -112,7 +112,7 @@ const Dashboard = () => {
                         </tr>
                     </thead>
                     {dataLoading ? <tr className="flex absolute w-full justify-center">
-                        <td><Loader2 className="animate-spinr"/></td>
+                        <td><Loader2 className="animate-spin"/></td>
                     </tr> : <tbody>
                         {tableData.map((item, index) => (
                             <tr className="text-center border-b border-b-gray-300" key={`row-${index}`}>

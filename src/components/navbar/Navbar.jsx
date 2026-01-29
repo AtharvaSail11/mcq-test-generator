@@ -16,7 +16,7 @@ const Navbar = ({currentSection}) => {
     }
     return (
         <div className="flex absolute z-10 items-center shadow-lg justify-between h-[8%] w-full px-4 bg-blue-50">
-            <p className="flex items-center gap-2 text-lg font-semibold"><Book/> McqGenerator</p>
+            <p className="flex items-center gap-2 text-lg font-semibold"><Book/> MCQ Generator</p>
             {currentUser ? <div className="flex gap-2 mr-5">
                 <MenuIcon style={{ cursor: 'pointer' }} onClick={() => setMenuPopup(true)} />
                 {menuPopup ? <div className="flex flex-col z-20 absolute bg-white shadow-lg max-w-2xl rounded-xl justify-center w-50 right-8">
