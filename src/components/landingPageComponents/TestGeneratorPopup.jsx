@@ -54,7 +54,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
         formData.append('docFile', file);
         formData.append('numberOfQuestions', 2);
         formData.append('testDuration', 15);
-        const response = await fetch('http://localhost:3000/api/generateQuestions', {
+        const response = await fetch(`${VITE_BACKEND_URL}/api/generateQuestions`, {
             method: 'POST',
             body: formData
         });
