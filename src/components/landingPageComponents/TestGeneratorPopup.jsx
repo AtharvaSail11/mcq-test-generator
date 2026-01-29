@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 
-const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, setTestDuration, setTestName }) => {
+const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, testDuration, setTestDuration, testName, setTestName }) => {
     const fileRef = useRef(null);
     const [fileName, setFileName] = useState('Upload File');
     const [numOfQuestions, setNumOfQuestions] = useState(null);
@@ -79,8 +79,12 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
     }
 
     const handleJsonTestGeneration = async () => {
-        setQuestionData(repairJsonData(jsonData));
-        setMainMcqPage(true);
+        if (testDuration && testName && jsonData) {
+            setQuestionData(repairJsonData(jsonData));
+            setMainMcqPage(true);
+        } else {
+            toast.warn('Fill all the fields to continue!')
+        }
     }
 
     return (
@@ -120,14 +124,14 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                             </div>
                             <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="questions-num">Number of questions:</label>
-                                <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e)=>setNumOfQuestions(e.target.value)} />
+                                <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e) => setNumOfQuestions(e.target.value)} />
                             </div>
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="testName">Test Name</label>
                             <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                         </div>
-                        <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading?'bg-gray-400 hover:bg-gray-500':'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
+                        <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading ? 'bg-gray-400 hover:bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-10 w-full justify-center">
@@ -139,7 +143,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                                 <li>
                                     <p>Paste this Prompt:</p>
                                     <div className="p-2">
-                                        <p>{"Generate 20 high-quality, non-trivial MCQs based on the attached file."}</p>
+                                        <p>{`Generate ${numOfQuestions || 5} high-quality, non-trivial MCQs based on the attached file.`}</p>
                                         <p>{"Output Requirements:"}</p>
                                         <p>{"1. Return ONLY a valid JSON array of objects."}</p>
                                         <p>{"2. No prose, markdown code blocks, or explanations."}</p>
@@ -151,16 +155,24 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                                 <li><p>Click the Generate Test button</p></li>
                             </ul>
                         </div>
-                        <div className="flex flex-col">
-                            <label htmlFor="required-time2">Test Duration</label>
-                            <select className="border border-gray-300 rounded-md" id="required-time2" onChange={handleSelect}>
-                                <option value="">Select</option>
-                                <option value="15" >15 min</option>
-                                <option value="30" >30 min</option>
-                                <option value="60" >1 hour </option>
-                            </select>
-                            <label htmlFor="testName">Test Name</label>
-                            <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col">
+                                <label htmlFor="required-time2">Test Duration</label>
+                                <select className="border border-gray-300 rounded-md" id="required-time2" onChange={handleSelect}>
+                                    <option value="">Select</option>
+                                    <option value="15" >15 min</option>
+                                    <option value="30" >30 min</option>
+                                    <option value="60" >1 hour </option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col">
+                                <label htmlFor="questions-num">Number of questions:</label>
+                                <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e) => setNumOfQuestions(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col">
+                                <label htmlFor="testName">Test Name</label>
+                                <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
+                            </div>
                         </div>
                         <textarea className="w-full border-2 border-gray-200" onChange={handleJsonInputChange} placeholder="Paste the JSON Data here"></textarea>
                         <button className="relative w-full bg-blue-500 hover:bg-blue-700 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleJsonTestGeneration}>Generate Test</button>

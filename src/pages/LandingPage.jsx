@@ -24,7 +24,7 @@ const LandingPage = () => {
                 <div className="flex flex-col h-full border-2 border-black w-full justify-center items-center">
                     <Title />
                     <GeneratorSection setTestGeneratorPopup={setTestGeneratorPopup} />
-                    {testGeneratorPopup?<TestGeneratorPopup setTestGeneratorPopup={setTestGeneratorPopup} setTestDuration={setTestDuration} setTestName={setTestName} setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData}/>:null}
+                    {testGeneratorPopup?<TestGeneratorPopup setTestGeneratorPopup={setTestGeneratorPopup} testDuration={testDuration} setTestDuration={setTestDuration} setTestName={setTestName} testName={testName} setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData}/>:null}
                 </div>
             </div>
     )
