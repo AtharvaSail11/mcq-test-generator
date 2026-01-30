@@ -21,7 +21,7 @@ const LandingPage = () => {
             <div className="relative h-full w-full bg-gradient-to-tl from-blue-50 to to-blue-100">
                 <ToastContainer/>
                 <Navbar currentSection={currentSection} />
-                <div className="flex flex-col h-full border-2 border-black w-full justify-center items-center">
+                <div className="flex flex-col h-full w-full justify-center items-center">
                     <Title />
                     <GeneratorSection setTestGeneratorPopup={setTestGeneratorPopup} />
                     {testGeneratorPopup?<TestGeneratorPopup setTestGeneratorPopup={setTestGeneratorPopup} testDuration={testDuration} setTestDuration={setTestDuration} setTestName={setTestName} testName={testName} setMainMcqPage={setMainMcqPage} setQuestionData={setQuestionData}/>:null}
