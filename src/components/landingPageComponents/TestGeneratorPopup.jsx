@@ -89,7 +89,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
 
     return (
         <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
-            <div className="flex flex-col gap-10 bg-white shadow-lg max-w-2xl rounded-xl justify-center w-full p-5">
+            <div className="flex flex-col gap-2 md:h-max lg:gap-10 bg-white shadow-lg max-w-2xl rounded-xl overflow-y-auto justify-center w-11/12 md:w-full p-5">
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">
                         <p className="text-2xl font-bold">Generate Your MCQs</p>
@@ -98,8 +98,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                     <p>Provide your content and set the options to create your test.</p>
                 </div>
                 <div className="flex justify-around w-full h-max">
-                    <button onClick={() => setTestGenerationType('JSON')} className={`relative w-max ${testGenerationType === 'JSON' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer font-semibold rounded-xl px-1.5 py-2 m-2`}>{"Generate using JSON (Recommended)"}</button>
-                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
+                    <button onClick={() => setTestGenerationType('JSON')} className={`relative w-max ${testGenerationType === 'JSON' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"Generate using JSON (Recommended)"}</button>
+                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
                 </div>
                 {testGenerationType === 'AI' ? (
                     <div className="flex flex-col gap-10 w-full justify-center">
@@ -134,8 +134,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                         <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading ? 'bg-gray-400 hover:bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
                     </div>
                 ) : (
-                    <div className="flex flex-col gap-10 w-full justify-center">
-                        <div className="flex flex-col px-5 py-2 w-full h-[200px] border-2 border-gray-400 rounded overflow-auto">
+                    <div className="flex flex-col gap-5 lg:gap-10 w-full justify-center">
+                        <div className="flex flex-col px-5 py-2 w-full h-[100px] md:h-[200px] border-2 border-gray-400 rounded overflow-auto">
                             <p className="font-bold">Instructions</p>
                             <ul style={{ listStyleType: 'Disc', marginLeft: '20px' }}>
                                 <li><p>Open gemini or any AI chatbot</p></li>
