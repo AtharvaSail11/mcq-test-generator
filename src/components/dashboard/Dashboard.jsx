@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2 } from "lucide-react";
+import { Loader2,X } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 
 
@@ -95,31 +95,31 @@ const Dashboard = () => {
     }, [selectedIndex]);
 
     return (
-        <div className="flex bg-gray-100 flex-col h-screen w-full">
+        <div className="flex bg-gray-100 flex-col items-center h-screen w-full">
             <Navbar currentSection={currentSection} />
-            <div className="flex mt-[10%] flex-col gap-5 h-full px-60 w-full">
+            <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-full w-[95%] lg:w-[80%]">
                 <div className="flex justify-between w-full h-max">
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
-                <table className="relative shadow-[0px_0px_5px_0px_#d1d5dc]">
+                <table className="w-full relative shadow-[0px_0px_5px_0px_#d1d5dc] overflow-y-scroll">
                     <thead>
-                        <tr className="bg-gray-200">
-                            <th className="py-2">Name</th>
-                            <th className="py-2">Score</th>
-                            <th className="py-2">Attempted At</th>
-                            <th className="py-2">Action</th>
+                        <tr className="bg-gray-200 text-[10px] md:text-base lg:text-lg">
+                            <th className="py-5 mx-2">Name</th>
+                            <th className="py-5 mx-2">Score</th>
+                            <th className="py-5 mx-2">Attempted At</th>
+                            <th className="py-5 mx-2">Action</th>
                         </tr>
                     </thead>
                     {dataLoading ? <tr className="flex absolute w-full justify-center">
                         <td><Loader2 className="animate-spin"/></td>
                     </tr> : <tbody>
                         {tableData.map((item, index) => (
-                            <tr className="text-center border-b border-b-gray-300" key={`row-${index}`}>
+                            <tr className="text-center text-[10px] md:text-base lg:text-lg border-b border-b-gray-300" key={`row-${index}`}>
                                 <td className="py-5">{item.testName}</td>
                                 <td className="py-5">{item.score}</td>
                                 <td className="py-5">{new Date(item?.submittedAt).toDateString()}</td>
-                                <td>
+                                <td className="p-2 lg:p-0">
                                     <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
                                         console.log('view result button clicked!')
                                         console.log('index:', index);
@@ -136,28 +136,29 @@ const Dashboard = () => {
 
             {resultPopup ? (
                 <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
-                    <div className="flex flex-col relative items-center h-full w-1/2 p-5 bg-white">
-                        <div className="flex w-full px-8 justify-between">
+                    <div className="flex flex-col relative items-center h-full w-11/12 lg:w-1/2 p-5 bg-white">
+                        <div className="flex w-full px-8 py-2 justify-between">
                             <p className="text-3xl font-semibold">Result</p>
-                            <p className="text-lg cursor-pointer" onClick={() => handleResultPopupClose()}>X</p>
+                            <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => handleResultPopupClose()}><X size="80%"/></div>
+
                         </div>
                         <div className="flex flex-col items-center w-full h-full overflow-y-auto">
                             <div className="flex flex-col items-center w-1/2 h-max">
-                                <p className="font-semibold text-2xl text-green-500">Correct:{correctAnswer || 0}</p>
-                                <p className="font-semibold text-2xl text-red-500">Incorrect:{incorrectAnswer || 0}</p>
+                                <p className="font-semibold text-base lg:text-2xl text-green-500">Correct:{correctAnswer || 0}</p>
+                                <p className="font-semibold text-base lg:text-2xl text-red-500">Incorrect:{incorrectAnswer || 0}</p>
                             </div>
 
-                            <div className="flex flex-col justify-center w-1/2 h-max">
+                            <div className="flex flex-col justify-center w-11/12 lg:w-1/2 h-max">
                                 {tableData[selectedIndex]?.questionData.map((questions, index) => (
                                     <div className="flex flex-col justify-center w-full mt-5">
                                         <div>
-                                            <p className="font-semibold">{questions.question}</p>
+                                            <p className="font-semibold text-sm lg:text-base">{questions.question}</p>
                                         </div>
                                         <div className="flex flex-col">
                                             <div className="flex flex-col">
                                                 {questions.options.map((option, index2) => (
                                                     <button className={`flex justify-start relative w-full border border-black ${(option === questions.correctAnswer && 'bg-green-500 text-white border-green-500') || (tableData[selectedIndex].selectedAnswers[index] === index2 && 'bg-red-500 text-white border-red-500')} font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer`} key={index2}>
-                                                        <p>{option}</p>
+                                                        <p className="text-sm lg:text-base">{option}</p>
                                                     </button>
                                                 ))}
                                             </div>

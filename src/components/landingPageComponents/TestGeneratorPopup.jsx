@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { jsonrepair } from "jsonrepair";
-import { Loader2 } from "lucide-react";
+import { Loader2,X } from "lucide-react";
 import { toast } from "react-toastify";
 
 
@@ -93,7 +93,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">
                         <p className="text-2xl font-bold">Generate Your MCQs</p>
-                        <div className="flex h-[30px] w-[30px] p-1.5 mb-2 justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { setTestGeneratorPopup(false) }}><p>x</p></div>
+                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { setTestGeneratorPopup(false) }}><X size="80%"/></div>
                     </div>
                     <p>Provide your content and set the options to create your test.</p>
                 </div>

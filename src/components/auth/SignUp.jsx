@@ -35,7 +35,7 @@ const SignUp=()=>{
     }
     return(
         <div className="flex justify-center items-center h-full w-full bg-gradient-to-tl from-blue-50 to to-blue-100">
-           <div className="flex flex-col items-center h-[500px] w-[400px] shadow-lg bg-blue-200/50 rounded-lg">
+           <div className="flex flex-col items-center w-[350px] h-[500px] md:w-[400px] shadow-lg bg-blue-200/50 rounded-lg">
             <div className="flex justify-center items-center h-[20%] w-full mb-5">
                 <p className="text-[40px] font-semibold text-blue-500">Sign In</p>
             </div>
