@@ -2,8 +2,8 @@ const ProgressBar=({attemptedQuestions,totalQuestions,question})=>{
     return(
         <div className="flex flex-col gap-2 w-full">
                     <div className="flex justify-between">
-                        <p>Question {question+1} of {totalQuestions}</p>
-                        <p>{(attemptedQuestions/totalQuestions)*100}% Complete</p>
+                        <p className="text-sm">Question {question+1} of {totalQuestions}</p>
+                        <p className="text-sm">{(attemptedQuestions/totalQuestions)*100}% Complete</p>
                     </div>
 
                     <div className="w-full h-max rounded bg-blue-300">

@@ -38,11 +38,11 @@ const TestTimer=({Time,handleSubmit})=>{
     },[totalTime])
 
     return(
-        <div className="flex justify-center items-center h-[20%] w-[30%] rounded-lg border shadow-sm text-card-foreground">
-                    <Clock/>
-                    <div className="flex flex-col mx-2 gap-1">
-                        <p>Time Remaining</p>
-                        <p className="text-3xl font-semibold">{getTotalTime()}</p>
+        <div className="flex justify-around items-center p-2 lg:p-5 h-max w-max lg:h-[20%] lg:w-[30%] rounded-lg border shadow-sm text-card-foreground">
+                    <Clock className="size-5 lg:size-7"/>
+                    <div className="flex flex-col w-max text-center mx-2 gap-1">
+                        <p className="text-sm lg:text-base">Time Remaining</p>
+                        <p className="text-xl lg:text-3xl font-semibold">{getTotalTime()}</p>
                     </div>
 
                 </div>
