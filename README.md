@@ -1,16 +1,19 @@
-# React + Vite
+# MCQ Test Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I built a full-stack MCQ Test Generator web application using React.js, Node.js, and Firebase that allows users to create and manage tests in two flexible modes: AI Mode and JSON Mode. 
 
-Currently, two official plugins are available:
+## AI Mode
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+In AI Mode, users upload a document which is processed by the backend and sent to the Gemini API to automatically generate MCQs.
 
-## React Compiler
+## JSON Mode
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+JSON Mode lets users manually paste structured question data for unlimited test creation, with built-in validation and auto-repair for minor JSON errors.
 
-## Expanding the ESLint configuration
+## Some features of This Web app
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The app includes user authentication, securely stores submitted tests, and provides a dashboard where users can view past tests and results, making it a complete and practical assessment-generation platform.
+
+## Final Verdict
+
+That's all there is for now! I am Improving it and will adding new features in the upcoming updates.
