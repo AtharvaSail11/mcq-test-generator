@@ -4,8 +4,9 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2,X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
+import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
 
 
 const Dashboard = () => {
@@ -18,6 +19,7 @@ const Dashboard = () => {
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [incorrectAnswer, setIncorrectAnswer] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [retestPage, setRetestPage] = useState(false);
     const navigate = useNavigate();
     const currentSection = 'Dashboard';
 
@@ -79,20 +81,38 @@ const Dashboard = () => {
         setIncorrectAnswer(null);
     }
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     if (selectedIndex !== null) {
+    //         console.log('selectedIndex:', selectedIndex);
+    //         console.log('selectedAnswers[0]:', tableData[selectedIndex]?.selectedAnswers[0]);
+    //         console.log('question:', tableData[selectedIndex].questionData[0].question);
+    //         tableData[selectedIndex].questionData.forEach((questions, index) => {
+    //             console.log('Answers:', questions.options[tableData[selectedIndex].selectedAnswers[index]]);
+    //             console.log('selectedAnswers:', tableData[selectedIndex].selectedAnswers[index]);
+    //         })
+    //     }
+
+    // }, [selectedIndex]);
+
+    const handleResultDisplay = (selectedIndex) => {
         if (selectedIndex !== null) {
-            console.log('selectedIndex:', selectedIndex);
-            console.log('selectedAnswers[0]:', tableData[selectedIndex]?.selectedAnswers[0]);
-            console.log('question:', tableData[selectedIndex].questionData[0].question);
-            tableData[selectedIndex].questionData.forEach((questions, index) => {
-                console.log('Answers:', questions.options[tableData[selectedIndex].selectedAnswers[index]]);
-                console.log('selectedAnswers:', tableData[selectedIndex].selectedAnswers[index]);
-            })
+            setSelectedIndex(selectedIndex);
             calculateAnswer(tableData[selectedIndex].questionData, tableData[selectedIndex].selectedAnswers, setCorrectAnswer, setIncorrectAnswer)
             setResultPopup(true);
         }
 
-    }, [selectedIndex]);
+    }
+
+    const handleRetest = (index) => {
+        setSelectedIndex(index)
+        setRetestPage(true);
+    }
+
+    if (retestPage) {
+        return (
+            <McqQuestionDisplay questionData={tableData[selectedIndex].questionData} testDuration={tableData[selectedIndex].testDuration} testName={tableData[selectedIndex].testName} retestPage={retestPage} setRetestPage={setRetestPage} />
+        )
+    }
 
     return (
         <div className="flex bg-gray-100 flex-col items-center h-screen w-full">
@@ -112,18 +132,20 @@ const Dashboard = () => {
                         </tr>
                     </thead>
                     {dataLoading ? <tr className="flex absolute w-full justify-center">
-                        <td><Loader2 className="animate-spin"/></td>
+                        <td><Loader2 className="animate-spin" /></td>
                     </tr> : <tbody>
                         {tableData.map((item, index) => (
                             <tr className="text-center text-[10px] md:text-base lg:text-lg border-b border-b-gray-300" key={`row-${index}`}>
                                 <td className="py-5">{item.testName}</td>
                                 <td className="py-5">{item.score}</td>
                                 <td className="py-5">{new Date(item?.submittedAt).toDateString()}</td>
-                                <td className="p-2 lg:p-0">
+                                <td className="flex flex-col gap-2 items-center p-2 lg:p-0">
                                     <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
-                                        console.log('view result button clicked!')
-                                        console.log('index:', index);
-                                        setSelectedIndex(index);
+                                        handleRetest(index)
+                                    }}>Retest</button>
+                                    <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
+                                        console.log('the index is:',index);
+                                        handleResultDisplay(index);
                                     }}>View Results</button>
                                 </td>
                             </tr>
@@ -139,7 +161,7 @@ const Dashboard = () => {
                     <div className="flex flex-col relative items-center h-full w-11/12 lg:w-1/2 p-5 bg-white">
                         <div className="flex w-full px-8 py-2 justify-between">
                             <p className="text-3xl font-semibold">Result</p>
-                            <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => handleResultPopupClose()}><X size="80%"/></div>
+                            <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => handleResultPopupClose()}><X size="80%" /></div>
 
                         </div>
                         <div className="flex flex-col items-center w-full h-full overflow-y-auto">

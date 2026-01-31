@@ -6,7 +6,7 @@ import TestTimer from "./components/TestTimer";
 import { calculateAnswer } from "../utils/calculationUtilities";
 
 
-const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
+const McqQuestionDisplay = ({ questionData,testDuration,testName,retestPage,setRetestPage }) => {
     const [question, setQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [currentQuestionData, setCurrentQuestionData] = useState(null);
@@ -77,7 +77,7 @@ const McqQuestionDisplay = ({ questionData,testDuration,testName }) => {
 
     if (submitted) {
         return (
-            <ResultDisplay mcqQuestions={mcqQuestions} selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} testName={testName} testDuration={testDuration}/>
+            <ResultDisplay mcqQuestions={mcqQuestions} selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} testName={testName} testDuration={testDuration} retestPage={retestPage} setRetestPage={setRetestPage}/>
         )
     }
 

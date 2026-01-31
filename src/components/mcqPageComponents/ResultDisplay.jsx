@@ -7,7 +7,7 @@ import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions, testName, testDuration }) => {
+const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions, testName, testDuration,retestPage,setRetestPage }) => {
     const navigate = useNavigate()
     const storeMcqTestData = async () => {
         try {
@@ -66,7 +66,7 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
                         <p>Save</p>
                     </button>
                 )}
-                <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={() => navigate('/Dashboard')}>
+                <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={() => retestPage ? setRetestPage(false) : navigate('/Dashboard')}>
                     <p>Dashboard</p>
                 </button>
             </div>
