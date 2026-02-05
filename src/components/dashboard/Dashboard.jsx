@@ -115,15 +115,15 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex bg-gray-100 flex-col items-center h-max w-full">
+        <div className="flex bg-gray-100 flex-col items-center h-screen w-full">
             <Navbar currentSection={currentSection} />
-            <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-screen w-[95%] lg:w-[80%]">
+            <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-max w-[95%] lg:w-[80%]">
                 <div className="flex justify-between w-full h-max">
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
-                <div className="max-h-[60%] overflow-y-auto w-full">
-                <table className="w-full relative shadow-[0px_0px_5px_0px_#d1d5dc] overflow-y-auto">
+                <div className="max-h-120 overflow-y-auto w-full">
+                <table className="w-full relative shadow-[0px_0px_5px_0px_#d1d5dc]">
                     <thead>
                         <tr className="bg-gray-200 text-[10px] md:text-base lg:text-lg">
                             <th className="py-5 mx-2">Name</th>
