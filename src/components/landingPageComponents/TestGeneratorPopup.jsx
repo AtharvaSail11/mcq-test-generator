@@ -69,11 +69,25 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
             const questionData = data?.questions
             setQuestionData(repairJsonData(JSON.stringify(questionData)));
             setMainMcqPage(true);
-        } catch (error) {
-            toast.error('Error while generating Test!');
-            console.log('error while generationg test:', error.message);
-        } finally {
+            if(response.status === 503){
+                toast.error('gemini api is overloaded! Please try again later.');
+            }
+            if(response.status === 429){
+                toast.error('Gemini API daily limit exceeded!');
+            }
             setTestLoading(false)
+        } catch (error) {
+            if(error.message === "Failed to fetch" || error.message ===  "Network request failed"){
+                console.log('failed to fetch!!!')
+                const timer=setTimeout(()=>{
+                    handleRequestSending();
+                    clearTimeout(timer);
+                },5000);
+            }else{
+                toast.error('Error while generating Test!');
+                console.log('error while generationg test:', error);
+                setTestLoading(false)
+            }
         }
 
     }
