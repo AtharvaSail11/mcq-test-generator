@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X,FileQuestion } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
 
@@ -24,6 +24,7 @@ const Dashboard = () => {
     const currentSection = 'Dashboard';
 
     const getUserData = async () => {
+        setDataLoading(true)
         try {
             if (currentUser) {
                 const collectionRef = collection(db, 'userData');
@@ -38,7 +39,10 @@ const Dashboard = () => {
         } catch (error) {
             console.log('error while fetching user data:', error.message);
         } finally {
-            setNameLoading(false);
+            const timer = setTimeout(() => {
+                setNameLoading(false);
+                clearTimeout(timer);
+            }, 500)
         }
 
     }
@@ -117,43 +121,48 @@ const Dashboard = () => {
     return (
         <div className="flex bg-gray-100 flex-col items-center h-screen w-full">
             <Navbar currentSection={currentSection} />
-            <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-max w-[95%] lg:w-[80%]">
+            <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-max w-[100%] lg:w-[80%]">
                 <div className="flex justify-between w-full h-max">
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
-                <div className="max-h-120 overflow-y-auto w-full">
-                <table className="w-full relative shadow-[0px_0px_5px_0px_#d1d5dc]">
-                    <thead>
-                        <tr className="bg-gray-200 text-[10px] md:text-base lg:text-lg">
-                            <th className="py-5 mx-2">Name</th>
-                            <th className="py-5 mx-2">Score</th>
-                            <th className="py-5 mx-2">Attempted At</th>
-                            <th className="py-5 mx-2">Action</th>
-                        </tr>
-                    </thead>
-                    {dataLoading ? <tr className="flex absolute w-full justify-center">
-                        <td><Loader2 className="animate-spin" /></td>
-                    </tr> : <tbody>
-                        {tableData.map((item, index) => (
-                            <tr className="text-center text-[10px] md:text-base lg:text-lg border-b border-b-gray-300" key={`row-${index}`}>
-                                <td className="py-5">{item.testName}</td>
-                                <td className="py-5">{item.score}</td>
-                                <td className="py-5">{new Date(item?.submittedAt).toDateString()}</td>
-                                <td className="flex flex-col gap-2 items-center p-2 lg:p-0">
-                                    <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
-                                        handleRetest(index)
-                                    }}>Retest</button>
-                                    <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
-                                        console.log('the index is:',index);
-                                        handleResultDisplay(index);
-                                    }}>View Results</button>
-                                </td>
+                <div className="max-h-100 self-center w-11/12 lg:w-full overflow-y-auto">
+                    <table className="w-full min-h-50 relative shadow-[0px_0px_5px_0px_#d1d5dc]">
+                        <thead>
+                            <tr className="bg-gray-200 sticky top-0 text-[10px] md:text-base lg:text-lg">
+                                <th className="py-5 mx-2">Name</th>
+                                <th className="py-5 mx-2">Score</th>
+                                <th className="py-5 mx-2">Attempted At</th>
+                                <th className="py-5 mx-2">Action</th>
                             </tr>
-                        ))}
-                    </tbody>}
+                        </thead>
+                        {!dataLoading && tableData.length > 0 ? <tbody>
+                            {tableData.map((item, index) => (
+                                <tr className="text-center text-[10px] md:text-base lg:text-lg border-b border-b-gray-300" key={`row-${index}`}>
+                                    <td className="py-5">{item.testName}</td>
+                                    <td className="py-5">{item.score}</td>
+                                    <td className="py-5">{new Date(item?.submittedAt).toDateString()}</td>
+                                    <td className="flex flex-col gap-2 items-center p-2 lg:p-0">
+                                        <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
+                                            handleRetest(index)
+                                        }}>Retest</button>
+                                        <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
+                                            console.log('the index is:', index);
+                                            handleResultDisplay(index);
+                                        }}>View Results</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody> : !dataLoading ? <tr className="flex flex-col p-2 absolute w-full justify-center items-center">
+                            <td><FileQuestion size={"40px"} /></td>
+                            <p className="text-xl lg:text-2xl text-[#1e2e2b] font-semibold">There is nothing to display!</p>
+                            <p className="text-md lg:text-lg text-[#1e2e2b]">Saved MCQ test details will be displayed here.</p>
+                        </tr> : <tr className="flex flex-col absolute w-full justify-center items-center">
+                            <td><Loader2 className="animate-spin" size={"30px"}/></td>
+                            <p className="text-2xl">Please Wait!</p>
+                        </tr>}
 
-                </table>
+                    </table>
                 </div>
 
             </div>
