@@ -15,7 +15,18 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading,setLoading]=useState(true);
 
+
     useEffect(() => {
+      const handleServerPing=async()=>{
+        try{
+          await fetch(`${import.meta.env.VITE_BACKEND_URL}/serverPing`);
+        }catch(error){
+          console.log('error:',error.message);
+        }
+      }
+
+      handleServerPing();
+  
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         setCurrentUser(user);
         setLoading(false)

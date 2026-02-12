@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { jsonrepair } from "jsonrepair";
 import { Loader2,X } from "lucide-react";
 import { toast } from "react-toastify";
@@ -11,6 +11,12 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
     const [testGenerationType, setTestGenerationType] = useState('JSON');
     const [jsonData, setJsonData] = useState(null);
     const [testLoading, setTestLoading] = useState(false);
+    const waitingMessageArray=["Initiating the process...",
+        "Analyzing the data...",
+        "Generating high quality questions...",
+        "Almost there..."
+    ];
+    const [currentMessageIndex,setCurrentMessageIndex]=useState(0);
 
 
 
@@ -52,6 +58,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
 
     const handleRequestSending = async () => {
         setTestLoading(true);
+
         try {
             const file = fileRef.current.files[0];
 
@@ -79,10 +86,6 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
         } catch (error) {
             if(error.message === "Failed to fetch" || error.message ===  "Network request failed"){
                 console.log('failed to fetch!!!')
-                const timer=setTimeout(()=>{
-                    handleRequestSending();
-                    clearTimeout(timer);
-                },5000);
             }else{
                 toast.error('Error while generating Test!');
                 console.log('error while generationg test:', error);
@@ -100,6 +103,18 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
             toast.warn('Fill all the fields to continue!')
         }
     }
+
+    useEffect(()=>{
+        let messageTimer;
+        if(testLoading){
+            messageTimer=setInterval(()=>{
+                console.log(waitingMessageArray[currentMessageIndex]);
+                setCurrentMessageIndex((prev)=>prev < 3 && prev + 1);
+            },10000)
+        }
+        return ()=>clearInterval(messageTimer);
+        
+    },[testLoading])
 
     return (
         <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
@@ -145,6 +160,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                             <label htmlFor="testName">Test Name</label>
                             <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                         </div>
+                        {testLoading && <p className="self-center text-base font-semibold">{waitingMessageArray[currentMessageIndex]}</p>}
                         <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading ? 'bg-gray-400 hover:bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
                     </div>
                 ) : (
