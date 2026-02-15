@@ -75,7 +75,7 @@ const McqQuestionDisplay = ({retestPage,setRetestPage }) => {
 
     if (submitted) {
         return (
-            <ResultDisplay selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} retestPage={retestPage} setRetestPage={setRetestPage}/>
+            <ResultDisplay mcqQuestions={mcqQuestions} selectedAnswer={selectedAnswer} correctAnswer={correctAnswer} incorrectAnswer={incorrectAnswer} retestPage={retestPage} setRetestPage={setRetestPage}/>
         )
     }
 

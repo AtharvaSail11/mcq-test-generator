@@ -9,14 +9,14 @@ import { ToastContainer, toast } from "react-toastify";
 import { McqTestContext } from "../../contexts/McqTestContext";
 
 
-const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer,retestPage,setRetestPage }) => {
+const ResultDisplay = ({ mcqQuestions,correctAnswer, incorrectAnswer, selectedAnswer,retestPage,setRetestPage }) => {
     const {state,dispatch}=useContext(McqTestContext);
     const navigate = useNavigate()
     const storeMcqTestData = async () => {
         try {
             const collectionRef = collection(db, 'mcqTestData');
             const data = {
-                questionData: state.mcqQuestions,
+                questionData: mcqQuestions,
                 selectedAnswers: selectedAnswer,
                 testName: state.testName,
                 testDuration: state.testDuration,
@@ -52,7 +52,7 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer,retestPa
             </div>
 
             <div className="flex flex-col justify-center items-center w-11/12 lg:w-1/2 border border-gray-200 lg:border-none h-max overflow-y-auto">
-                {state.mcqQuestions.map((questionData, index) => (
+                {mcqQuestions.map((questionData, index) => (
                     <div className="flex flex-col justify-center w-11/12 mt-5">
                         <div>
                             <p className="font-semibold text-sm lg:text-base">{questionData.question}</p>
