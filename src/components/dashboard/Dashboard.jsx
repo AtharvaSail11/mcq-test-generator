@@ -7,6 +7,7 @@ import Navbar from "../navbar/Navbar";
 import { Loader2, X,FileQuestion } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
+import { McqTestContext } from "../../contexts/McqTestContext";
 
 
 const Dashboard = () => {
@@ -20,6 +21,7 @@ const Dashboard = () => {
     const [incorrectAnswer, setIncorrectAnswer] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [retestPage, setRetestPage] = useState(false);
+    const {state,dispatch}=useContext(McqTestContext);
     const navigate = useNavigate();
     const currentSection = 'Dashboard';
 
@@ -57,7 +59,6 @@ const Dashboard = () => {
                     const savedTestData = savedTestSnapshot.docs.map((item) => {
                         return item.data()
                     });
-                    console.log('savedTestData:', savedTestData)
 
                     setTableData(savedTestData);
                 }
@@ -85,19 +86,6 @@ const Dashboard = () => {
         setIncorrectAnswer(null);
     }
 
-    // useEffect(() => {
-    //     if (selectedIndex !== null) {
-    //         console.log('selectedIndex:', selectedIndex);
-    //         console.log('selectedAnswers[0]:', tableData[selectedIndex]?.selectedAnswers[0]);
-    //         console.log('question:', tableData[selectedIndex].questionData[0].question);
-    //         tableData[selectedIndex].questionData.forEach((questions, index) => {
-    //             console.log('Answers:', questions.options[tableData[selectedIndex].selectedAnswers[index]]);
-    //             console.log('selectedAnswers:', tableData[selectedIndex].selectedAnswers[index]);
-    //         })
-    //     }
-
-    // }, [selectedIndex]);
-
     const handleResultDisplay = (selectedIndex) => {
         if (selectedIndex !== null) {
             setSelectedIndex(selectedIndex);
@@ -109,12 +97,13 @@ const Dashboard = () => {
 
     const handleRetest = (index) => {
         setSelectedIndex(index)
+        dispatch({type:'startTest',payload:{questionData:tableData[index].questionData,testDuration:tableData[index].testDuration,testName:tableData[index].testName}})
         setRetestPage(true);
     }
 
     if (retestPage) {
         return (
-            <McqQuestionDisplay questionData={tableData[selectedIndex].questionData} testDuration={tableData[selectedIndex].testDuration} testName={tableData[selectedIndex].testName} retestPage={retestPage} setRetestPage={setRetestPage} />
+            <McqQuestionDisplay retestPage={retestPage} setRetestPage={setRetestPage} />
         )
     }
 
@@ -147,7 +136,6 @@ const Dashboard = () => {
                                             handleRetest(index)
                                         }}>Retest</button>
                                         <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => {
-                                            console.log('the index is:', index);
                                             handleResultDisplay(index);
                                         }}>View Results</button>
                                     </td>

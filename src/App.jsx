@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import LandingPage from './pages/LandingPage'
 import LogIn from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
@@ -8,47 +8,61 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './config/firebase'
 import ProtectedRoute from './components/ProtectedRoute'
 import { UserContext } from './contexts/UserContext'
+import { McqTestContext } from './contexts/McqTestContext'
+import { McqStateHandler } from './reducers/McqStateHandler'
 
 
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading,setLoading]=useState(true);
+  const [loading, setLoading] = useState(true);
+
+  const initialState = {
+    mainMcqPage: false,
+    questionData: [],
+    testDuration: null,
+    testName: null,
+    testGeneratorPopup: false
+  }
+
+  const [state, dispatch] = useReducer(McqStateHandler, initialState);
 
 
-    useEffect(() => {
-      const handleServerPing=async()=>{
-        try{
-          await fetch(`${import.meta.env.VITE_BACKEND_URL}/serverPing`);
-        }catch(error){
-          console.log('error:',error.message);
-        }
+  useEffect(() => {
+    const handleServerPing = async () => {
+      try {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/serverPing`);
+      } catch (error) {
+        console.log('error:', error.message);
       }
+    }
 
-      handleServerPing();
-  
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setCurrentUser(user);
-        setLoading(false)
-      });
+    handleServerPing();
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false)
+    });
 
 
-      return () => unsubscribe()
-    }, [])
+    return () => unsubscribe()
+  }, [])
   return (
     <div className='h-screen w-screen box-border'>
       <UserContext.Provider value={currentUser}>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<LandingPage/>} />
-            <Route path='/Login' element={<LogIn/>} />
-            <Route path='/SignUp' element={<SignUp/>} />
-            <Route path='/Dashboard' element={<ProtectedRoute currentUser={currentUser} loading={loading}>
-              <Dashboard />
-            </ProtectedRoute>} />
+        <McqTestContext.Provider value={{ state, dispatch }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<LandingPage />} />
+              <Route path='/Login' element={<LogIn />} />
+              <Route path='/SignUp' element={<SignUp />} />
+              <Route path='/Dashboard' element={<ProtectedRoute currentUser={currentUser} loading={loading}>
+                <Dashboard />
+              </ProtectedRoute>} />
 
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </McqTestContext.Provider>
       </UserContext.Provider>
     </div>
   )

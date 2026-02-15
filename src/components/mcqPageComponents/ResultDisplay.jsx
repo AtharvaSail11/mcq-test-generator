@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { Clock } from "lucide-react";
 import { db } from "../../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -6,17 +6,20 @@ import { nanoid } from "nanoid";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { McqTestContext } from "../../contexts/McqTestContext";
 
-const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQuestions, testName, testDuration,retestPage,setRetestPage }) => {
+
+const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer,retestPage,setRetestPage }) => {
+    const {state,dispatch}=useContext(McqTestContext);
     const navigate = useNavigate()
     const storeMcqTestData = async () => {
         try {
             const collectionRef = collection(db, 'mcqTestData');
             const data = {
-                questionData: mcqQuestions,
+                questionData: state.mcqQuestions,
                 selectedAnswers: selectedAnswer,
-                testName: testName,
-                testDuration: testDuration,
+                testName: state.testName,
+                testDuration: state.testDuration,
                 testId: nanoid(12),
                 score: `${correctAnswer}/${correctAnswer + incorrectAnswer}`,
                 submittedAt: new Date().toISOString(),
@@ -31,6 +34,15 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
 
     };
 
+    const handleDashboardNavigation=(retestPage)=>{
+        dispatch({type:'endTest'});
+        if(retestPage){
+            setRetestPage(false)
+        }else{
+            navigate('/Dashboard');
+        }
+    }
+
     return (
         <div className="flex flex-col items-center w-full p-5">
             <ToastContainer />
@@ -40,7 +52,7 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
             </div>
 
             <div className="flex flex-col justify-center items-center w-11/12 lg:w-1/2 border border-gray-200 lg:border-none h-max overflow-y-auto">
-                {mcqQuestions.map((questionData, index) => (
+                {state.mcqQuestions.map((questionData, index) => (
                     <div className="flex flex-col justify-center w-11/12 mt-5">
                         <div>
                             <p className="font-semibold text-sm lg:text-base">{questionData.question}</p>
@@ -66,7 +78,7 @@ const ResultDisplay = ({ correctAnswer, incorrectAnswer, selectedAnswer, mcqQues
                         <p>Save</p>
                     </button>
                 )}
-                <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={() => retestPage ? setRetestPage(false) : navigate('/Dashboard')}>
+                <button className='flex justify-start relative w-max border bg-blue-500 text-white border-blue-500 font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer' onClick={() => handleDashboardNavigation(retestPage)}>
                     <p>Dashboard</p>
                 </button>
             </div>

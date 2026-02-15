@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useContext } from "react";
 import { jsonrepair } from "jsonrepair";
 import { Loader2,X } from "lucide-react";
 import { toast } from "react-toastify";
+import { McqTestContext } from "../../contexts/McqTestContext";
 
 
-const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestionData, testDuration, setTestDuration, testName, setTestName }) => {
+const TestGeneratorPopup = () => {
+    const {state,dispatch}=useContext(McqTestContext)
     const fileRef = useRef(null);
     const [fileName, setFileName] = useState('Upload File');
     const [numOfQuestions, setNumOfQuestions] = useState(null);
     const [testGenerationType, setTestGenerationType] = useState('JSON');
+    const [testDuration,setTestDuration]=useState(null);
+    const [testName,setTestName]=useState(null);
     const [jsonData, setJsonData] = useState(null);
     const [testLoading, setTestLoading] = useState(false);
     const waitingMessageArray=["Initiating the process...",
@@ -72,10 +76,8 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
             });
 
             const data = await response.json();
-            console.log('data:', data.questions);
-            const questionData = data?.questions
-            setQuestionData(repairJsonData(JSON.stringify(questionData)));
-            setMainMcqPage(true);
+            const questionData = data?.questions;
+            dispatch({type:'startTest',payload:{questionData:repairJsonData(JSON.stringify(questionData)),testDuration:testDuration,testName:testName}});
             if(response.status === 503){
                 toast.error('gemini api is overloaded! Please try again later.');
             }
@@ -97,8 +99,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
 
     const handleJsonTestGeneration = async () => {
         if (testDuration && testName && jsonData) {
-            setQuestionData(repairJsonData(jsonData));
-            setMainMcqPage(true);
+            dispatch({type:'startTest',payload:{questionData:repairJsonData(jsonData),testDuration:testDuration,testName:testName}});
         } else {
             toast.warn('Fill all the fields to continue!')
         }
@@ -122,7 +123,7 @@ const TestGeneratorPopup = ({ setTestGeneratorPopup, setMainMcqPage, setQuestion
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">
                         <p className="text-2xl font-bold">Generate Your MCQs</p>
-                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { setTestGeneratorPopup(false) }}><X size="80%"/></div>
+                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { dispatch({type:'handlePopup',payload:{isOpen:false}})}}><X size="80%"/></div>
                     </div>
                     <p>Provide your content and set the options to create your test.</p>
                 </div>
