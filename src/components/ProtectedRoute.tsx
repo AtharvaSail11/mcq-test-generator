@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React,{ useState } from "react";
+import type { User } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-const ProtectedRoute=({children,currentUser,loading})=>{
+const ProtectedRoute=({children,currentUser,loading}:{children:React.ReactNode,currentUser:User | null,loading:boolean})=>{
     if(loading){
         return <div className="flex justify-center items-center h-screen w-screen">
             <div className="flex flex-col items-center h-max w-max">

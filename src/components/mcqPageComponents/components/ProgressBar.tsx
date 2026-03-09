@@ -1,4 +1,4 @@
-const ProgressBar=({attemptedQuestions,totalQuestions,question})=>{
+const ProgressBar=({attemptedQuestions,totalQuestions,question}:{attemptedQuestions:number,totalQuestions:number | null,question:number})=>{
     return(
         <div className="flex flex-col gap-2 w-full">
                     <div className="flex justify-between">

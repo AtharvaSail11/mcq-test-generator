@@ -1,4 +1,4 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Clock } from "lucide-react";
 import { db } from "../../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -7,10 +7,22 @@ import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { McqTestContext } from "../../contexts/McqTestContext";
+import type { QuestionObject } from "../../types/McqTypes";
+
+interface resultDisplay {
+    mcqQuestions: QuestionObject[] | null,
+    correctAnswer: number,
+    incorrectAnswer: number,
+    selectedAnswer: number[],
+    retestPage: boolean,
+    setRetestPage: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 
-const ResultDisplay = ({ mcqQuestions,correctAnswer, incorrectAnswer, selectedAnswer,retestPage,setRetestPage }) => {
-    const {state,dispatch}=useContext(McqTestContext);
+const ResultDisplay = ({ mcqQuestions, correctAnswer, incorrectAnswer, selectedAnswer, retestPage, setRetestPage }: resultDisplay) => {
+    const McqContext = useContext(McqTestContext)
+    if (!McqContext) return null;
+    const { state, dispatch } = McqContext
     const navigate = useNavigate()
     const storeMcqTestData = async () => {
         try {
@@ -23,22 +35,22 @@ const ResultDisplay = ({ mcqQuestions,correctAnswer, incorrectAnswer, selectedAn
                 testId: nanoid(12),
                 score: `${correctAnswer}/${correctAnswer + incorrectAnswer}`,
                 submittedAt: new Date().toISOString(),
-                userId: auth.currentUser.uid
+                userId: auth.currentUser && auth.currentUser.uid
             }
             await addDoc(collectionRef, data);
             toast.success('Saved the Test Results Successfully');
         } catch (error) {
             toast.error('Error while Saving Test Results');
-            console.log('error:', error.message);
+            console.log('error:', error);
         }
 
     };
 
-    const handleDashboardNavigation=(retestPage)=>{
-        dispatch({type:'endTest'});
-        if(retestPage){
+    const handleDashboardNavigation = (retestPage:boolean) => {
+        dispatch({ type: 'endTest' });
+        if (retestPage) {
             setRetestPage(false)
-        }else{
+        } else {
             navigate('/Dashboard');
         }
     }
@@ -52,7 +64,7 @@ const ResultDisplay = ({ mcqQuestions,correctAnswer, incorrectAnswer, selectedAn
             </div>
 
             <div className="flex flex-col justify-center items-center w-11/12 lg:w-1/2 border border-gray-200 lg:border-none h-max overflow-y-auto">
-                {mcqQuestions.map((questionData, index) => (
+                {mcqQuestions && mcqQuestions.map((questionData, index:number) => (
                     <div className="flex flex-col justify-center w-11/12 mt-5">
                         <div>
                             <p className="font-semibold text-sm lg:text-base">{questionData.question}</p>

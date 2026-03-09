@@ -4,7 +4,7 @@ import LogIn from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
 import Dashboard from './components/dashboard/Dashboard'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged,type User } from 'firebase/auth'
 import { auth } from './config/firebase'
 import ProtectedRoute from './components/ProtectedRoute'
 import { UserContext } from './contexts/UserContext'
@@ -14,12 +14,12 @@ import { McqStateHandler } from './reducers/McqStateHandler'
 
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const initialState = {
     mainMcqPage: false,
-    questionData: [],
+    questionData: null,
     testDuration: null,
     testName: null,
     testGeneratorPopup: false
@@ -33,13 +33,13 @@ function App() {
       try {
         await fetch(`${import.meta.env.VITE_BACKEND_URL}/serverPing`);
       } catch (error) {
-        console.log('error:', error.message);
+        console.log('error:', error);
       }
     }
 
     handleServerPing();
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user:User | null) => {
       setCurrentUser(user);
       setLoading(false)
     });

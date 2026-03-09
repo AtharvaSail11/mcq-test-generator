@@ -1,4 +1,6 @@
-export const McqStateHandler = (state, action) => {
+import type { McqTestAction, McqTestState } from "../types/McqTypes";
+
+export const McqStateHandler = (state:McqTestState, action:McqTestAction) => {
     if (action.type === 'startTest') {
         return {
             ...state,

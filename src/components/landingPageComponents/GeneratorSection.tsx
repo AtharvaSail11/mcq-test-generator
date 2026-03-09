@@ -1,11 +1,15 @@
 import { useState,useContext } from "react";
-import TestGeneratorPopup from "./TestGeneratorPopup";
 import { ArrowRight } from "lucide-react";
 import { McqTestContext } from "../../contexts/McqTestContext";
+import type{ McqTestInterface } from "../../types/McqTypes";
 
 
 const GeneratorSection=()=>{
-   const {dispatch}=useContext(McqTestContext)
+
+   const McqContext=useContext(McqTestContext)
+   if(!McqContext) return null;
+   const {dispatch}=McqContext
+   
     return(
         <div className="flex relative justify-center w-full mt-2">
             <div className=" flex flex-col items-center w-max">
