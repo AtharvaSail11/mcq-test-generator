@@ -1,26 +1,28 @@
-import { useEffect, useRef, useState,useContext } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { jsonrepair } from "jsonrepair";
-import { Loader2,X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { McqTestContext } from "../../contexts/McqTestContext";
 
 
 const TestGeneratorPopup = () => {
-    const {state,dispatch}=useContext(McqTestContext)
+    const { state, dispatch } = useContext(McqTestContext)
     const fileRef = useRef(null);
     const [fileName, setFileName] = useState('Upload File');
     const [numOfQuestions, setNumOfQuestions] = useState(null);
     const [testGenerationType, setTestGenerationType] = useState('JSON');
-    const [testDuration,setTestDuration]=useState(null);
-    const [testName,setTestName]=useState(null);
+    const [testDuration, setTestDuration] = useState(null);
+    const [tags,setTags]=useState(null);
+    const [testName, setTestName] = useState(null);
     const [jsonData, setJsonData] = useState(null);
     const [testLoading, setTestLoading] = useState(false);
-    const waitingMessageArray=["Initiating the process...",
+    const waitingMessageArray = ["Initiating the process...",
         "Analyzing the data...",
         "Generating high quality questions...",
         "Almost there..."
     ];
-    const [currentMessageIndex,setCurrentMessageIndex]=useState(0);
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const tagArr = ["ai/ml", "python", "cloud-computing", "network-security", "software-engineering"];
 
 
 
@@ -34,7 +36,7 @@ const TestGeneratorPopup = () => {
         if (files.length > 0) {
             setFileName(files[0].name);
         } else {
-            setFileName('Upload File')
+            setFileName('Upload File');
         }
     }
 
@@ -77,18 +79,18 @@ const TestGeneratorPopup = () => {
 
             const data = await response.json();
             const questionData = data?.questions;
-            dispatch({type:'startTest',payload:{questionData:repairJsonData(JSON.stringify(questionData)),testDuration:testDuration,testName:testName}});
-            if(response.status === 503){
+            dispatch({ type: 'startTest', payload: { questionData: repairJsonData(JSON.stringify(questionData)), testDuration: testDuration, testName: testName,tags:tags } });
+            if (response.status === 503) {
                 toast.error('gemini api is overloaded! Please try again later.');
             }
-            if(response.status === 429){
+            if (response.status === 429) {
                 toast.error('Gemini API daily limit exceeded!');
             }
             setTestLoading(false)
         } catch (error) {
-            if(error.message === "Failed to fetch" || error.message ===  "Network request failed"){
+            if (error.message === "Failed to fetch" || error.message === "Network request failed") {
                 console.log('failed to fetch!!!')
-            }else{
+            } else {
                 toast.error('Error while generating Test!');
                 console.log('error while generationg test:', error);
                 setTestLoading(false)
@@ -99,23 +101,23 @@ const TestGeneratorPopup = () => {
 
     const handleJsonTestGeneration = async () => {
         if (testDuration && testName && jsonData) {
-            dispatch({type:'startTest',payload:{questionData:repairJsonData(jsonData),testDuration:testDuration,testName:testName}});
+            dispatch({ type: 'startTest', payload: { questionData: repairJsonData(jsonData), testDuration: testDuration, testName: testName,tags:tags} });
         } else {
             toast.warn('Fill all the fields to continue!')
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         let messageTimer;
-        if(testLoading){
-            messageTimer=setInterval(()=>{
+        if (testLoading) {
+            messageTimer = setInterval(() => {
                 console.log(waitingMessageArray[currentMessageIndex]);
-                setCurrentMessageIndex((prev)=>prev < 3 && prev + 1);
-            },10000)
+                setCurrentMessageIndex((prev) => prev < 3 && prev + 1);
+            }, 10000)
         }
-        return ()=>clearInterval(messageTimer);
-        
-    },[testLoading])
+        return () => clearInterval(messageTimer);
+
+    }, [testLoading])
 
     return (
         <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
@@ -123,7 +125,7 @@ const TestGeneratorPopup = () => {
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">
                         <p className="text-2xl font-bold">Generate Your MCQs</p>
-                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { dispatch({type:'handlePopup',payload:{isOpen:false}})}}><X size="80%"/></div>
+                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { dispatch({ type: 'handlePopup', payload: { isOpen: false } }) }}><X size="80%" /></div>
                     </div>
                     <p>Provide your content and set the options to create your test.</p>
                 </div>
@@ -150,6 +152,20 @@ const TestGeneratorPopup = () => {
                                     <option value="15" >15 min</option>
                                     <option value="30" >30 min</option>
                                     <option value="60" >1 hour </option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col w-1/2 justify-between">
+                                <label htmlFor="required-time1">Tag</label>
+                                <select className="border border-gray-300 rounded-md" id="required-time1" onChange={(e)=>setTags(e.target.value)}>
+                                    <option value={'All'}>All</option>
+                                    {tagArr.map((item, index) => {
+                                        const arr = item.split('');
+                                        arr[0] = arr[0].toUpperCase();
+                                        let tagTitle = arr.join('');
+                                        return (<option value={item}>
+                                            {tagTitle}
+                                        </option>)
+                                    })}
                                 </select>
                             </div>
                             <div className="flex flex-col w-1/2 justify-between">
@@ -194,6 +210,20 @@ const TestGeneratorPopup = () => {
                                     <option value="15" >15 min</option>
                                     <option value="30" >30 min</option>
                                     <option value="60" >1 hour </option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col w-1/2 justify-between">
+                                <label htmlFor="required-time1">Tag</label>
+                                <select className="border border-gray-300 rounded-md" id="required-time1" onChange={(e)=>setTags(e.target.value)}>
+                                    <option value={'All'}>All</option>
+                                    {tagArr.map((item, index) => {
+                                        const arr = item.split('');
+                                        arr[0] = arr[0].toUpperCase();
+                                        let tagTitle = arr.join('');
+                                        return (<option value={item}>
+                                            {tagTitle}
+                                        </option>)
+                                    })}
                                 </select>
                             </div>
                             <div className="flex flex-col">

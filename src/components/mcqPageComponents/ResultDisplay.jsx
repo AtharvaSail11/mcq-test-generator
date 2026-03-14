@@ -20,6 +20,7 @@ const ResultDisplay = ({ mcqQuestions,correctAnswer, incorrectAnswer, selectedAn
                 selectedAnswers: selectedAnswer,
                 testName: state.testName,
                 testDuration: state.testDuration,
+                tags:[state.tags],
                 testId: nanoid(12),
                 score: `${correctAnswer}/${correctAnswer + incorrectAnswer}`,
                 submittedAt: new Date().toISOString(),

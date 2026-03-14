@@ -7,6 +7,7 @@ export const McqStateHandler = (state, action) => {
             questionData: action.payload.questionData,
             testDuration: action.payload.testDuration,
             testName: action.payload.testName,
+            tags:action.payload.tags
 
         }
     } else if (action.type === 'handlePopup') {

@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2, X,FileQuestion } from "lucide-react";
+import { Loader2, X, FileQuestion } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
 import { McqTestContext } from "../../contexts/McqTestContext";
@@ -21,8 +21,11 @@ const Dashboard = () => {
     const [incorrectAnswer, setIncorrectAnswer] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [retestPage, setRetestPage] = useState(false);
-    const {state,dispatch}=useContext(McqTestContext);
+    const { state, dispatch } = useContext(McqTestContext);
     const navigate = useNavigate();
+    const tagArr = ["ai/ml", "python", "cloud-computing", "network-security", "software-engineering"];
+    const [filteredData, setFilteredData] = useState([]);
+    const [selectedTag, setSelectedTag] = useState('All');
     const currentSection = 'Dashboard';
 
     const getUserData = async () => {
@@ -61,6 +64,7 @@ const Dashboard = () => {
                     });
 
                     setTableData(savedTestData);
+                    setFilteredData(savedTestData);
                 }
             }
         } catch (error) {
@@ -89,7 +93,7 @@ const Dashboard = () => {
     const handleResultDisplay = (selectedIndex) => {
         if (selectedIndex !== null) {
             setSelectedIndex(selectedIndex);
-            calculateAnswer(tableData[selectedIndex].questionData, tableData[selectedIndex].selectedAnswers, setCorrectAnswer, setIncorrectAnswer)
+            calculateAnswer(filteredData[selectedIndex].questionData, filteredData[selectedIndex].selectedAnswers, setCorrectAnswer, setIncorrectAnswer)
             setResultPopup(true);
         }
 
@@ -97,9 +101,21 @@ const Dashboard = () => {
 
     const handleRetest = (index) => {
         setSelectedIndex(index)
-        dispatch({type:'startTest',payload:{questionData:tableData[index].questionData,testDuration:tableData[index].testDuration,testName:tableData[index].testName}})
+        dispatch({ type: 'startTest', payload: { questionData: filteredData[index].questionData, testDuration: filteredData[index].testDuration, testName: filteredData[index].testName } })
         setRetestPage(true);
     }
+
+    useEffect(() => {
+        if (filteredData) {
+            let filtered = filteredData;
+            if (selectedTag && selectedTag !== 'All') {
+                filtered = tableData.filter((item) => item.tags && item?.tags.includes(selectedTag));
+            }else{
+                filtered=tableData;
+            }
+            setFilteredData(filtered);
+        }
+    }, [selectedTag, filteredData]);
 
     if (retestPage) {
         return (
@@ -115,6 +131,18 @@ const Dashboard = () => {
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
+                <select className="w-max p-2 text-black text-sm font-semibold bg-[#4fb6a1]/20 shadow-lg rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
+                    <option value={''} disabled hidden>Filter by Tags</option>
+                    <option value={'All'}>All</option>
+                    {tagArr.map((item, index) => {
+                        const arr = item.split('');
+                        arr[0] = arr[0].toUpperCase();
+                        let tagTitle = arr.join('');
+                        return (<option value={item}>
+                            {tagTitle}
+                        </option>)
+                    })}
+                </select>
                 <div className="max-h-100 self-center w-11/12 lg:w-full overflow-y-auto">
                     <table className="w-full min-h-50 relative shadow-[0px_0px_5px_0px_#d1d5dc]">
                         <thead>
@@ -125,8 +153,8 @@ const Dashboard = () => {
                                 <th className="py-5 mx-2">Action</th>
                             </tr>
                         </thead>
-                        {!dataLoading && tableData.length > 0 ? <tbody>
-                            {tableData.map((item, index) => (
+                        {!dataLoading && filteredData.length > 0 ? <tbody>
+                            {filteredData.map((item, index) => (
                                 <tr className="text-center text-[10px] md:text-base lg:text-lg border-b border-b-gray-300" key={`row-${index}`}>
                                     <td className="py-5">{item.testName}</td>
                                     <td className="py-5">{item.score}</td>
@@ -146,7 +174,7 @@ const Dashboard = () => {
                             <p className="text-xl lg:text-2xl text-[#1e2e2b] font-semibold">There is nothing to display!</p>
                             <p className="text-md lg:text-lg text-[#1e2e2b]">Saved MCQ test details will be displayed here.</p>
                         </tr> : <tr className="flex flex-col absolute w-full justify-center items-center">
-                            <td><Loader2 className="animate-spin" size={"30px"}/></td>
+                            <td><Loader2 className="animate-spin" size={"30px"} /></td>
                             <p className="text-2xl">Please Wait!</p>
                         </tr>}
 
@@ -170,7 +198,7 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex flex-col justify-center w-11/12 lg:w-1/2 h-max">
-                                {tableData[selectedIndex]?.questionData.map((questions, index) => (
+                                {filteredData[selectedIndex]?.questionData.map((questions, index) => (
                                     <div className="flex flex-col justify-center w-full mt-5">
                                         <div>
                                             <p className="font-semibold text-sm lg:text-base">{questions.question}</p>
@@ -178,7 +206,7 @@ const Dashboard = () => {
                                         <div className="flex flex-col">
                                             <div className="flex flex-col">
                                                 {questions.options.map((option, index2) => (
-                                                    <button className={`flex justify-start relative w-full border border-black ${(option === questions.correctAnswer && 'bg-green-500 text-white border-green-500') || (tableData[selectedIndex].selectedAnswers[index] === index2 && 'bg-red-500 text-white border-red-500')} font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer`} key={index2}>
+                                                    <button className={`flex justify-start relative w-full border border-black ${(option === questions.correctAnswer && 'bg-green-500 text-white border-green-500') || (filteredData[selectedIndex].selectedAnswers[index] === index2 && 'bg-red-500 text-white border-red-500')} font-semibold rounded-xl px-4 py-1 m-0.5 cursor-pointer`} key={index2}>
                                                         <p className="text-sm lg:text-base">{option}</p>
                                                     </button>
                                                 ))}
