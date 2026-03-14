@@ -131,7 +131,7 @@ const Dashboard = () => {
                     <p className="font-medium text-2xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
-                <select className="w-max p-2 text-black text-sm font-semibold bg-[#4fb6a1]/20 shadow-lg rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
+                <select className="w-max p-2 text-black text-sm font-semibold bg-blue-300/20 shadow-lg rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
                     <option value={''} disabled hidden>Filter by Tags</option>
                     <option value={'All'}>All</option>
                     {tagArr.map((item, index) => {
