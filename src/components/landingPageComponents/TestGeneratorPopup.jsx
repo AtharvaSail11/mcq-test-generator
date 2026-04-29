@@ -121,17 +121,17 @@ const TestGeneratorPopup = () => {
 
     return (
         <div className="flex absolute h-full w-full z-10 justify-center items-center bg-black/50">
-            <div className="flex flex-col gap-2 md:h-max lg:gap-10 bg-white shadow-lg max-w-2xl rounded-xl overflow-y-auto justify-center w-11/12 md:w-full p-5">
+            <div className="flex flex-col gap-2 md:h-max lg:gap-2 bg-white shadow-lg max-w-2xl rounded-xl overflow-y-auto justify-center w-11/12 md:w-full p-5">
                 <div className="flex flex-col w-full">
                     <div className="flex justify-between">
                         <p className="text-2xl font-bold">Generate Your MCQs</p>
-                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { dispatch({ type: 'handlePopup', payload: { isOpen: false } }) }}><X size="80%" /></div>
+                        <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => { dispatch({ type: 'handlePopup', payload: { isOpen: false } }) }}><X size="50%" /></div>
                     </div>
                     <p>Provide your content and set the options to create your test.</p>
                 </div>
                 <div className="flex justify-around w-full h-max">
-                    <button onClick={() => setTestGenerationType('JSON')} className={`relative w-max ${testGenerationType === 'JSON' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"Generate using JSON (Recommended)"}</button>
-                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-white text-blue-700'} border border-blue-500 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
+                    <button onClick={() => setTestGenerationType('JSON')} className={`relative w-max ${testGenerationType === 'JSON' ? 'bg-blue-700 hover:bg-blue-800 text-white' : 'bg-white text-blue-700'} border border-slate-200 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"Generate using JSON (Recommended)"}</button>
+                    <button onClick={() => setTestGenerationType('AI')} className={`relative w-max ${testGenerationType === 'AI' ? 'bg-blue-700 hover:bg-blue-800 text-white' : 'bg-white text-blue-700'} border border-slate-200 cursor-pointer text-xs lg:text-base font-semibold rounded-xl px-1.5 py-2 m-2`}>{"AI generation (limited)"}</button>
                 </div>
                 {testGenerationType === 'AI' ? (
                     <div className="flex flex-col gap-10 w-full justify-center">
@@ -139,7 +139,7 @@ const TestGeneratorPopup = () => {
                             <div className="flex flex-col gap-0.5 justify-center items-center w-full">
                                 <p className="relative mt-2 font-bold">{fileName}</p>
                                 <p className="relative mt-2">{"Upload a .txt, .pdf, or .docx file"}</p>
-                                <label className="relative font-semibold min-w-[84px] max-w-[480px] bg-gray-200 hover:bg-gray-300 cursor-pointer text-black rounded-xl px-4 py-2 m-2" htmlFor="file-input">Choose a file</label>
+                                <label className="relative font-semibold min-w-[84px] max-w-[480px] bg-gray-200 hover:bg-gray-300 cursor-pointer text-black text-sm rounded-xl px-4 py-2 m-2" htmlFor="file-input">Choose a file</label>
                                 <input style={{ display: "none" }} id="file-input" name="file-input" ref={fileRef} type="file" accept="application/pdf, .docx" onChange={handleFileChange} />
                             </div>
 
@@ -182,7 +182,7 @@ const TestGeneratorPopup = () => {
                     </div>
                 ) : (
                     <div className="flex flex-col gap-5 lg:gap-10 w-full justify-center">
-                        <div className="flex flex-col px-5 py-2 w-full h-[100px] md:h-[200px] border-2 border-gray-400 rounded overflow-auto">
+                        <div className="flex flex-col px-5 py-2 w-full h-[100px] md:h-[200px] border border-slate-400 rounded overflow-auto">
                             <p className="font-bold">Instructions</p>
                             <ul style={{ listStyleType: 'Disc', marginLeft: '20px' }}>
                                 <li><p>Open gemini or any AI chatbot</p></li>

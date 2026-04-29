@@ -13,7 +13,7 @@ const LandingPage = () => {
 
     return (
             state.mainMcqPage ? <McqMainPage/> :
-            <div className="relative h-full w-full bg-gradient-to-tl from-blue-50 to to-blue-100">
+            <div className="relative h-full w-full bg-gradient-to-tl from-slate-50 to to-slate-100">
                 <ToastContainer/>
                 <Navbar currentSection={currentSection}/>
                 <div className="flex flex-col h-full w-full justify-center items-center">

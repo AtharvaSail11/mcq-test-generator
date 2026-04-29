@@ -156,7 +156,7 @@ const Dashboard = () => {
                         {!dataLoading && filteredData.length > 0 ? <tbody className="divide-y divide-slate-100">
                             {filteredData.map((item, index) => (
                                 <tr className="text-[10px] text-left md:text-base lg:text-lg hover:bg-blue-50" key={`row-${index}`}>
-                                    <td className="py-5"><p className="ml-4">{item.testName}</p></td>
+                                    <td className="py-5 text-slate-800"><p className="ml-4">{item.testName}</p></td>
                                     <td className="py-5"><p className="text-center text-sm w-max min-w-15 font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-xl">{item.score}</p></td>
                                     <td className="py-5 text-slate-500"><p className="ml-2">{new Date(item?.submittedAt).toDateString()}</p></td>
                                     <td className="flex gap-2 items-center p-2 lg:p-0">
@@ -188,7 +188,7 @@ const Dashboard = () => {
                     <div className="flex flex-col relative items-center h-full w-11/12 lg:w-1/2 p-5 bg-white">
                         <div className="flex w-full px-8 py-2 justify-between">
                             <p className="text-3xl font-semibold">Result</p>
-                            <div className="flex h-[30px] w-[30px] justify-center items-center bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => handleResultPopupClose()}><X size="80%" /></div>
+                            <div className="flex h-[30px] w-[30px] justify-center items-center bg-slate-200 hover:bg-gray-300 cursor-pointer rounded-full" onClick={() => handleResultPopupClose()}><X size="50%" /></div>
 
                         </div>
                         <div className="flex flex-col items-center w-full h-full overflow-y-auto">
