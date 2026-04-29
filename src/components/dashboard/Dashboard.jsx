@@ -127,8 +127,8 @@ const Dashboard = () => {
         <div className="flex bg-slate-50 flex-col items-center h-screen w-full">
             <Navbar currentSection={currentSection} />
             <div className="flex mt-[20%] lg:mt-[10%] flex-col items-center gap-5 h-max w-[100%] lg:w-[80%]">
-                <div className="flex justify-between w-full h-max">
-                    <p className="font-semibold text-4xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
+                <div className="flex justify-center lg:justify-between w-full h-max">
+                    <p className="font-semibold text-2xl lg:text-4xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
                 </div>
                 <select className="w-max p-2 text-black text-sm font-medium bg-white/80 border border-slate-200 rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
@@ -156,14 +156,14 @@ const Dashboard = () => {
                         {!dataLoading && filteredData.length > 0 ? <tbody className="divide-y divide-slate-100">
                             {filteredData.map((item, index) => (
                                 <tr className="text-[10px] text-left md:text-base lg:text-lg hover:bg-blue-50" key={`row-${index}`}>
-                                    <td className="py-5 text-slate-800"><p className="ml-4">{item.testName}</p></td>
-                                    <td className="py-5"><p className="text-center text-sm w-max min-w-15 font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-xl">{item.score}</p></td>
-                                    <td className="py-5 text-slate-500"><p className="ml-2">{new Date(item?.submittedAt).toDateString()}</p></td>
+                                    <td className="py-5 text-slate-800 text-sm lg:text-base"><p className="ml-4">{item.testName}</p></td>
+                                    <td className="py-5"><p className="text-center text-xs lg:text-sm w-max min-w-15 font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-xl">{item.score}</p></td>
+                                    <td className="py-5 text-slate-500 text-sm lg:text-base"><p className="ml-2">{new Date(item?.submittedAt).toDateString()}</p></td>
                                     <td className="flex gap-2 items-center p-2 lg:p-0">
-                                        <button className="w-max h-max px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-900 text-white text-sm font-medium cursor-pointer" onClick={() => {
+                                        <button className="w-max h-max px-4 py-2 mt-5 rounded-lg bg-blue-700 hover:bg-blue-900 text-white text-xs lg:text-sm font-medium cursor-pointer" onClick={() => {
                                             handleRetest(index)
                                         }}>Retest</button>
-                                        <button className="w-max h-max px-2 py-1 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-blue-700 text-sm font-medium cursor-pointer" onClick={() => {
+                                        <button className="w-max h-max px-2 py-1 mt-5 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-blue-700 text-xs lg:text-sm font-medium cursor-pointer" onClick={() => {
                                             handleResultDisplay(index);
                                         }}>View Results</button>
                                     </td>
