@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2, X, FileQuestion } from "lucide-react";
+import { Loader2, X, FileQuestion, File,Percent,CalendarClock } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
 import { McqTestContext } from "../../contexts/McqTestContext";
@@ -27,6 +27,24 @@ const Dashboard = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [selectedTag, setSelectedTag] = useState('All');
     const currentSection = 'Dashboard';
+
+    const DashboardCardData = [
+        {
+            icon: File,
+            title: 'Total Tests',
+            data: tableData.length
+        },
+        {
+            icon: Percent,
+            title: 'Success Rate',
+            data: '100%'
+        },
+        {
+            icon: CalendarClock,
+            title: 'Recent Activity',
+            data: 'Today'
+        },
+    ]
 
     const getUserData = async () => {
         setDataLoading(true)
@@ -110,8 +128,8 @@ const Dashboard = () => {
             let filtered = filteredData;
             if (selectedTag && selectedTag !== 'All') {
                 filtered = tableData.filter((item) => item.tags && item?.tags.includes(selectedTag));
-            }else{
-                filtered=tableData;
+            } else {
+                filtered = tableData;
             }
             setFilteredData(filtered);
         }
@@ -130,6 +148,18 @@ const Dashboard = () => {
                 <div className="flex justify-center lg:justify-between w-full h-max">
                     <p className="font-semibold text-2xl lg:text-4xl">Welcome, {nameLoading ? 'Loading...' : userName}</p>
                     {/* <button className="w-max h-max px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white">+ New Assessment</button> */}
+                </div>
+                <div className="flex flex-col gap-10 md:flex-row h-max w-max px-10 py-5">
+                    {/*card component */}
+                    {DashboardCardData.map((card, index) => (
+                        <div className="flex items-center w-80 h-max px-5 py-4 gap-5 border border-slate-300 rounded-xl hover:shadow-md">
+                            <div className="flex justify-center items-center p-3 rounded-xl bg-blue-200"><card.icon className="text-blue-500 size-5" /></div>
+                            <div className="flex flex-col">
+                                <p className="font-bold text-2xl">{card.data}</p>
+                                <p className="text-sm text-slate-500">{card.title}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
                 <select className="w-max p-2 text-black text-sm font-medium bg-white/80 border border-slate-200 rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
                     <option value={''} disabled hidden>Filter by Tags</option>
