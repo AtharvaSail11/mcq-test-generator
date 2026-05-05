@@ -1,10 +1,10 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import { auth, db } from "../../config/firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import { Loader2, X, FileQuestion, File,Percent,CalendarClock } from "lucide-react";
+import { Loader2, X, FileQuestion, File, Percent, CalendarClock } from "lucide-react";
 import { calculateAnswer } from "../utils/calculationUtilities";
 import McqQuestionDisplay from "../mcqPageComponents/McqQuestionDisplay";
 import { McqTestContext } from "../../contexts/McqTestContext";
@@ -26,7 +26,23 @@ const Dashboard = () => {
     const tagArr = ["ai/ml", "python", "cloud-computing", "network-security", "software-engineering"];
     const [filteredData, setFilteredData] = useState([]);
     const [selectedTag, setSelectedTag] = useState('All');
+    const [averageSuccessRate, setAverageSuccessRate] = useState(0);
     const currentSection = 'Dashboard';
+
+    const calculateSuccessRate = useMemo(() => {
+        let percentSum = 0;
+
+        if (tableData.length > 0) {
+            for (let item of tableData) {
+                const [currentScore, totalQuestions] = item.score.split('/');
+
+                let percentage = Math.floor((parseInt(currentScore) / parseInt(totalQuestions)) * 100);
+                percentSum += Math.floor(percentage);
+            }
+
+            return Math.floor(percentSum / tableData.length);
+        }
+    }, [tableData]);
 
     const DashboardCardData = [
         {
@@ -36,8 +52,8 @@ const Dashboard = () => {
         },
         {
             icon: Percent,
-            title: 'Success Rate',
-            data: '100%'
+            title: 'Average Success Rate',
+            data: `${averageSuccessRate}%`
         },
         {
             icon: CalendarClock,
@@ -45,6 +61,12 @@ const Dashboard = () => {
             data: 'Today'
         },
     ]
+
+    useEffect(() => {
+        if (tableData.length > 0) {
+            setAverageSuccessRate(calculateSuccessRate);
+        }
+    }, [tableData])
 
     const getUserData = async () => {
         setDataLoading(true)
