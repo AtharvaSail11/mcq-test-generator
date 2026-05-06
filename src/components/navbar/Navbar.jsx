@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { auth } from "../../config/firebase";
-import { MenuIcon } from "lucide-react";
 import { Book } from "lucide-react";
+import NavbarMenu from "./components/NavbarMenu";
 
 const Navbar = ({currentSection}) => {
     const currentUser = useContext(UserContext);
@@ -17,18 +17,7 @@ const Navbar = ({currentSection}) => {
     return (
         <div className="flex absolute z-10 items-center shadow-lg justify-between h-[8%] w-full px-4 bg-white/80">
             <p className="flex items-center gap-2 text-lg font-semibold"><Book/> MCQ Generator</p>
-            {currentUser ? <div className="flex gap-2 mr-5">
-                <MenuIcon style={{ cursor: 'pointer' }} onClick={() => setMenuPopup(true)} />
-                {menuPopup ? <div className="flex flex-col z-20 absolute bg-white shadow-lg max-w-2xl rounded-xl justify-center w-50 right-8">
-                    {currentSection === 'Dashboard'?<div className="flex p-2 justify-center w-full cursor-pointer hover:bg-gray-100" onClick={() => {navigate('/')}}>LandingPage</div>:
-                    <div className="flex p-2 justify-center w-full cursor-pointer hover:bg-gray-100" onClick={() => {navigate('/Dashboard')}}>Dashboard</div>
-                    }
-                    <div className="flex p-2 justify-center w-full cursor-pointer hover:bg-gray-100" onClick={handleLogout}>Logout</div>
-                    <div className="flex p-2 justify-center w-full cursor-pointer hover:bg-gray-100" onClick={()=>setMenuPopup(false)}>Close</div>
-                </div> : null}
-                {/* <button className="w-max h-max px-2 py-1 rounded-sm bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Dashboard')}>Dashboard</button>
-                <button className="w-max h-max px-2 py-1 rounded-sm bg-blue-600 hover:bg-blue-800 text-white cursor-pointer" onClick={handleLogout}>Logout</button> */}
-            </div> : <button className="w-max h-max px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Login')}>Login</button>
+            {currentUser ? <NavbarMenu handleLogout={handleLogout} currentSection={currentSection} navigate={navigate}/> : <button className="w-max h-max px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-800 text-white" onClick={() => navigate('/Login')}>Login</button>
             }
 
         </div>
