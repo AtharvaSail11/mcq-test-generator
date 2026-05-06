@@ -183,7 +183,7 @@ const Dashboard = () => {
                         </div>
                     ))}
                 </div>
-                <select className="w-max p-2 text-black text-sm font-medium bg-white/80 border border-slate-200 rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
+                {/* <select className="w-max p-2 text-black text-sm font-medium bg-white/80 border border-slate-200 rounded-sm" id="tag" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
                     <option value={''} disabled hidden>Filter by Tags</option>
                     <option value={'All'}>All</option>
                     {tagArr.map((item, index) => {
@@ -194,7 +194,7 @@ const Dashboard = () => {
                             {tagTitle}
                         </option>)
                     })}
-                </select>
+                </select> */}
                 <div className="max-h-100 self-center rounded-xl border border-slate-200 shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] w-11/12 lg:w-3/4 overflow-y-auto">
                     <table className="w-full bg-white min-h-50 relative">
                         <thead>
