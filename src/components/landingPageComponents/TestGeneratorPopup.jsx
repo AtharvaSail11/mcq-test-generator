@@ -144,7 +144,7 @@ const TestGeneratorPopup = () => {
                             </div>
 
                         </div>
-                        <div className="flex w-full gap-4">
+                        <div className="flex flex-col lg:flex-row w-full gap-4">
                             <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="required-time1">Test Duration</label>
                                 <select className="border border-gray-300 rounded-md" id="required-time1" onChange={handleSelect}>
@@ -178,7 +178,7 @@ const TestGeneratorPopup = () => {
                             <input className="border border-gray-300" type="text" id="testName" placeholder="Test Name" onChange={(e) => setTestName(e.target.value)} />
                         </div>
                         {testLoading && <p className="self-center text-base font-semibold">{waitingMessageArray[currentMessageIndex]}</p>}
-                        <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading ? 'bg-gray-400 hover:bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
+                        <button className={`flex justify-center items-center gap-2 relative w-full ${testLoading ? 'bg-gray-400 hover:bg-gray-500' : 'bg-blue-700 hover:bg-blue-800'} font-semibold text-white rounded-xl px-1.5 py-2 m-2`} onClick={handleRequestSending} disabled={testLoading}>Generate Test {testLoading && <Loader2 color="#FFFFFF" size="20px" className="animate-spin" />}</button>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-5 lg:gap-10 w-full justify-center">
@@ -236,7 +236,7 @@ const TestGeneratorPopup = () => {
                             </div>
                         </div>
                         <textarea className="w-full border-2 border-gray-200" onChange={handleJsonInputChange} placeholder="Paste the JSON Data here"></textarea>
-                        <button className="relative w-full bg-blue-500 hover:bg-blue-700 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleJsonTestGeneration}>Generate Test</button>
+                        <button className="relative w-full bg-blue-700 hover:bg-blue-800 font-semibold text-white rounded-xl px-1.5 py-2 m-2" onClick={handleJsonTestGeneration}>Generate Test</button>
                     </div>)}
 
             </div>
