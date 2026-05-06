@@ -154,7 +154,7 @@ const TestGeneratorPopup = () => {
                                     <option value="60" >1 hour </option>
                                 </select>
                             </div>
-                            <div className="flex flex-col w-1/2 justify-between">
+                            {/* <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="required-time1">Tag</label>
                                 <select className="border border-gray-300 rounded-md" id="required-time1" onChange={(e)=>setTags(e.target.value)}>
                                     <option value={'All'}>All</option>
@@ -167,7 +167,7 @@ const TestGeneratorPopup = () => {
                                         </option>)
                                     })}
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="questions-num">Number of questions:</label>
                                 <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e) => setNumOfQuestions(e.target.value)} />
@@ -212,7 +212,7 @@ const TestGeneratorPopup = () => {
                                     <option value="60" >1 hour </option>
                                 </select>
                             </div>
-                            <div className="flex flex-col w-1/2 justify-between">
+                            {/* <div className="flex flex-col w-1/2 justify-between">
                                 <label htmlFor="required-time1">Tag</label>
                                 <select className="border border-gray-300 rounded-md" id="required-time1" onChange={(e)=>setTags(e.target.value)}>
                                     <option value={'All'}>All</option>
@@ -225,7 +225,7 @@ const TestGeneratorPopup = () => {
                                         </option>)
                                     })}
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="flex flex-col">
                                 <label htmlFor="questions-num">Number of questions:</label>
                                 <input className="border border-gray-300 rounded-md" placeholder="eg:5" type="number" name="questions-num" id="questions-num" onChange={(e) => setNumOfQuestions(e.target.value)} />
