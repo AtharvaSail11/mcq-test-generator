@@ -3,6 +3,7 @@ import { auth,db } from "../../config/firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { collection,setDoc,doc } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
+import { toast,ToastContainer } from "react-toastify"
 
 const SignUp=()=>{
     const navigate=useNavigate();
@@ -30,6 +31,7 @@ const SignUp=()=>{
             await setDoc(userDoc,UserData);
             navigate('/Dashboard');
         }catch(error){
+            toast.error('Error occurred while creating an account');
             console.log('error while creating an account:',error.message);
         }     
     }

@@ -3,6 +3,7 @@ import { auth,db } from "../../config/firebase"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { collection,addDoc } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
+import { toast,ToastContainer } from "react-toastify"
 
 const LogIn=()=>{
     const navigate=useNavigate();
@@ -25,11 +26,13 @@ const LogIn=()=>{
                 navigate("/Dashboard")
             }
         }catch(error){
+            toast.error('Incorrect email or password');
             console.log(error);
         }
     }
     return(
         <div className="flex justify-center items-center h-full w-full bg-white">
+            <ToastContainer/>
            <div className="flex flex-col items-center w-[350px] h-[500px] md:w-[400px] shadow-lg border border-slate-200 rounded-lg">
             <div className="flex justify-center items-center h-[20%] w-full mb-5">
                 <p className="text-[40px] font-medium text-black">Log In</p>
